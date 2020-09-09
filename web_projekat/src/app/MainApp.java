@@ -11,7 +11,9 @@ public class MainApp {
 				port(41);
 				staticFiles.externalLocation(new File("./static").getCanonicalPath());
 
-			
+				get("/test", (req, res) -> {
+					return "Works";
+				});
 				
 				System.out.println("asdad");
 			}
