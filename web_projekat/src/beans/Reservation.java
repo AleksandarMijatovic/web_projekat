@@ -3,6 +3,7 @@ package beans;
 public class Reservation {
 	int id;
 	private Apartment appartment;
+	private Guest guest;
 	private long startDate;
 	private int daysForStay = 1;
 	private double price;
@@ -13,7 +14,7 @@ public class Reservation {
 	public Reservation() {}
 	
 	public Reservation(int id, Apartment appartment, long startDate, int daysForStay, double price, String message,
-			ReStatus status) {
+			ReStatus status, Guest guest) {
 		super();
 		this.id = id;
 		this.startDate = startDate;
@@ -22,6 +23,7 @@ public class Reservation {
 		this.message = message;
 		this.status = status;
 		this.appartment = appartment;
+		this.guest = guest;
 	}
 
 	public int getId() {
@@ -39,6 +41,15 @@ public class Reservation {
 		this.appartment = appartment;
 	}
 
+	public Guest getGuest() {
+		return guest;
+	}
+
+	public void setGuest(Guest guest) {
+		this.guest = guest;
+	}
+
+	
 	public long getStartDate() {
 		return startDate;
 	}
