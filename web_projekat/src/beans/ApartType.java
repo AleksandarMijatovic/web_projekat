@@ -1,5 +1,6 @@
 package beans;
 
-public class ApartType {
-
+public enum ApartType {
+	room,
+	apartment
 }

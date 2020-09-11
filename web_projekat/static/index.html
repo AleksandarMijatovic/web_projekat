@@ -1,8 +1,44 @@
+<!DOCTYPE html>
 <html>
+
 <head>
-	<title>Web</title>
-</head>
+	<title>BookMe</title>
+	<link href="css/toast.css" rel="stylesheet" />
+	<link href="css/header.css" rel="stylesheet" type="text/css"/>
+	<meta charset="utf-8"/>
+</head> 
+
 <body>
-	Proba za projekat
+<div id="webApp">
+	<div class="header" >
+		<div class="container">
+			<div class="logo">
+			<h1><a href="#/">BookMe</a></h1>
+			</div>
+				<div class="dugmici">
+					<ul>
+						<li><a href="#/login">PRIJAVA</a></li>
+						<li><a href="#/registration">REGISTRACIJA</a></li>
+					</ul>
+				</div>
+		</div>
+
+	</div>
+
+	
+	 <router-view></router-view>
+</div>
+
+<script src="scripts/jquery.min.js"></script>
+<script src="scripts/axios.js"></script>
+<script src="scripts/vue.js"></script>
+<script src="scripts/vue-router.js"></script>
+<script src="scripts/vuejs-datepicker.min.js"></script>
+
+<script src="scripts/toast.js"></script>
+<script src="js/home.js"></script>
+<script src="js/login.js"></script>
+<script src="js/app.js"></script>
+
 </body>
-</html> 
+</html>

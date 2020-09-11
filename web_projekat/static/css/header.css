@@ -1,0 +1,102 @@
+body {
+	margins:auto;
+
+}
+
+.header {
+  width: 100%;
+  background-color:rgb(102, 153, 153);
+  color: white;
+  top: 0;
+  position: fixed;
+    z-index: 99;
+ 
+}
+
+.container{
+	width: 1000px;	
+    margin: auto;
+}
+.logo{
+	font-style:italic;
+	float:left;
+}
+
+a{
+	text-decoration:none;
+	color:white;
+}
+
+li {
+	list-style:none;
+	float:left;
+	margin-left:15px;
+	margin-top:15px;
+	 font-size:20px;
+}
+
+.searchtable {
+	width: 30%; }
+tr{margin:0px 20px 0px 20px;}
+
+.select{
+	font-size: 18px;
+	border-radius: 10px;
+	height:40px;
+	outline:none;
+	width:98%;
+	border: 1px solid black;
+}
+
+.searchInput{
+	width: 95%;
+	height:40px;  
+	border-radius: 10px;
+	outline: none;
+	border: 1px solid black;
+}
+
+
+#webApp{
+	margin-top:90px;
+}
+
+.dugmici {
+	font-style:italic;
+	float:right;
+}
+
+.button{
+	background-color:rgb(102, 153, 153);
+	  color: white;
+	  border: none;
+	padding:10px 15px 10px 15px;
+	font-size: 20px;
+	width: 100%;
+	border-radius: 12px;
+	  z-index: 100;
+} 
+
+.inputlogin{
+	width: 95%;
+	height:40px;  
+	border-radius: 10px;
+	font-size:18;
+	outline: none;
+	border: 1px solid black;
+		margin-top:5px;
+		margin-bottom:5px;
+	
+}
+
+input[type="submit"]{
+	background-color:rgb(102, 153, 153);
+	  color: white;
+	  border: none;
+	padding:10px 15px 10px 15px;
+	font-size: 20px;
+	border-radius: 12px;
+	margin-top:10px;
+		outline: none;
+
+}
