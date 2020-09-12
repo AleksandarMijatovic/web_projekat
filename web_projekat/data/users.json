@@ -1,0 +1,12 @@
+[
+	{
+		"type": "Administrator",
+		"username": "admin",
+		"password": "admin",
+		"name": "Aleksandar",
+		"surname": "Mijatovic",
+		"gender": "male",
+		"isBlocked": false,
+		"typeOfUser": "Administrator"
+	}
+]

@@ -5,15 +5,46 @@ import static spark.Spark.port;
 import static spark.Spark.staticFiles;
 
 import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import beans.Administrator;
+import beans.Gender;
+import beans.User;
+import controller.UserController;
+
+import dao.UserDao;
+
+import service.UserService;
+
+
 public class MainApp {
 
 	public static void main(String[] args) throws Exception{
 				port(41);
 				staticFiles.externalLocation(new File("./static").getCanonicalPath());
 
+				
+						
+						 // UserDao dao = new UserDao();
+						//  List<User> users=dao.GetAll();
+						 // User user = dao.Login("admin","admin");
+						 // for(User u : users)
+						 // System.out.println(u);
+				/*User a = new Administrator("admin", "admin", "Dusan", "Petrovic",
+						  Gender.male);
+						
+						  UserDao dao = new UserDao();
+						  dao.GetAll();*/
 				get("/test", (req, res) -> {
 					return "Works";
 				});
+				
+				UserDao userDao = new UserDao();
+				
+				
+				new UserController(new UserService(userDao));
 				
 				System.out.println("asdad");
 			}
