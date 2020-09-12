@@ -7,12 +7,12 @@ Vue.component("login", {
 	<table class="table" v-bind:hidden="logged">
 		<tr>
 			<td>Korisnicko ime:</td>
-			<td><input class="inputlogin" placeholder="Unesite korisnicko ime" type="text" /></td>	
+			<td><input class="input" placeholder="Unesite korisnicko ime" type="text" /></td>	
 		
 		</tr>
 		<tr>
 			<td>Lozinka:</td>
-			<td><input class="inputlogin" placeholder="Unesite lozinku" /></td>	
+			<td><input class="input" placeholder="Unesite lozinku" /></td>	
 			
 		</tr>
 
