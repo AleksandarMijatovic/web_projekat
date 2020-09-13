@@ -43,6 +43,16 @@ public class UserService {
 		return g.toJson(user);		
 	}
 	
+	public String Update(User user) {
+		try {
+			return g.toJson(userdao.Update(user));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
+		return null;
+	}
+	
 	public String getUser(String username) {
 		try {
 			return g.toJson(userdao.get(username));

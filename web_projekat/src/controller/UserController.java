@@ -7,7 +7,6 @@ import static spark.Spark.put;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import adapterdao.RuntimeTypeAdapterFactory;
 import beans.Login;
 import beans.Administrator;
 import beans.Guest;
@@ -24,7 +23,7 @@ public class UserController {
 	public UserController(final UserService userService) {
 		
 		post("/users/registration", (req, res) ->{ 		
-			User u = gs.fromJson(req.body(), Host.class);		
+			User u = gs.fromJson(req.body(), Guest.class);		
 			return userService.Register(u);		
 		});
 
@@ -53,6 +52,14 @@ public class UserController {
 		Session ss = req.session(true);
 		User user = ss.attribute("user");
 		return gs.toJson(user);
+	});
+	
+	put("/users/account", (req,res)-> {
+		Session ss = req.session(true);
+			String a = userService.Update(gs.fromJson(req.body(), Administrator.class));
+			ss.attribute("user", gs.fromJson(a, Administrator.class));
+			return a;
+		
 	});
 	
 	}

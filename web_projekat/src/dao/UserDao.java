@@ -73,6 +73,18 @@ public class UserDao {
 		return null;
 	}
 	
+	public User Update(User user) throws JsonSyntaxException, IOException {
+		ArrayList<User> users = (ArrayList<User>) GetAll();
+		for(User u : users) {
+			if(u.getUsername().equals(user.getUsername())) {
+				users.set(users.indexOf(u),user);
+				break;
+			}
+		}
+		SaveAll(users);
+		return user;
+	}
+	
 	public User get(String username) throws JsonSyntaxException, IOException {
 		ArrayList<User> users = (ArrayList<User>) GetAll();
 		if(users != null) {

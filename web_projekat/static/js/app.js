@@ -1,6 +1,7 @@
 const HomePage = { template: '<home-page></home-page>' }
 const login = { template: '<login></login>' }
 const registration = { template: '<registration></registration>' }
+const account = { template: '<account></account>' }
 
 
 const router = new VueRouter({
@@ -8,7 +9,8 @@ const router = new VueRouter({
 	  routes: [
 	    { path: '/', component: HomePage},
 	    { path: '/login', component: login },
-	    { path: '/registration', component: registration }
+	    { path: '/registration', component: registration },
+	    { path: '/account', component: account }
 	  ]
 });
 
