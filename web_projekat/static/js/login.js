@@ -32,7 +32,7 @@ Vue.component("login", {
 		</tr>
 
 	</table>
-	<p v-bind:hidden="!logged">Kosirnik je vec ulogovan!</p>
+	<p v-bind:hidden="!logged">Korisnik je vec ulogovan!</p>
 	<button v-bind:hidden="!logged" id="buttonBrisanje">Odjava</button><br />
 
 </form>
