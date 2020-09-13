@@ -35,7 +35,7 @@ Vue.component("home-page", {
 		</tr>
 		
 		<tr v-bind:hidden="!visibleSearchBar">
-			<td> TIP SMESTAJA
+			<td> TIP SMEŠTAJA
 				<select class="select" name="apartmentType" v-model="type">
 				   <option class="option" value=""></option>
 				   <option class="option" value="soba">Soba</option>
@@ -45,13 +45,13 @@ Vue.component("home-page", {
 			<td> SORTIRANJE	
 				<select class="select" name="sort" v-model="sortValue">
 				   <option class="option" value=""></option>
-				   <option class="option" value="rastuca">Cena rastuca</option>
-				   <option class="option" value="opadajuca">Cena opadajuca</option>
+				   <option class="option" value="rastuca">Cena rastuća</option>
+				   <option class="option" value="opadajuca">Cena opadajuća</option>
 				</select>
 			
 			</td>
 			</tr>
-		<tr v-bind:hidden="!visibleSearchBar"><label>SADRZAJ</label></tr>
+		<tr v-bind:hidden="!visibleSearchBar"><label>SADRŽAJ</label></tr>
 		<tr v-bind:hidden="!visibleSearchBar">
 			<td><button class="button" >Pretraži</button></td>		
 			<td><button class="button" v-on:click="ponistipretragu">Poništi</button></td>		

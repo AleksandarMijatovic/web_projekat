@@ -32,10 +32,11 @@ public class MainApp {
 						 // User user = dao.Login("admin","admin");
 						 // for(User u : users)
 						 // System.out.println(u);
-				/*User a = new Administrator("admin", "admin", "Dusan", "Petrovic",
+			/*	User a = new Administrator("admin", "admin", "Aleksandar", "Mijatovic",
 						  Gender.male);
 						
-						  UserDao dao = new UserDao();
+						//  UserDao dao = new UserDao();
+						//  dao.AddUser(a);
 						  dao.GetAll();*/
 				get("/test", (req, res) -> {
 					return "Works";

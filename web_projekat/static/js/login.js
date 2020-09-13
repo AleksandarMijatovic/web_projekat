@@ -16,7 +16,7 @@ Vue.component("login", {
 	<table class="table" v-bind:hidden="logged">
 		<tr>
 			<td>Korisnicko ime:</td>
-			<td><input class="input" placeholder="Unesite korisnicko ime" type="text" v-model="username" name="username"/></td>	
+			<td><input class="input" placeholder="Unesite korisničko ime" type="text" v-model="username" name="username"/></td>	
 			<td ><p style="color: red" >{{usernameError}}</p></td>	
 		</tr>
 		<tr>
@@ -59,9 +59,9 @@ Vue.component("login", {
 				this.passwordError='';
 				
 				if(this.username == "")
-					this.usernameError =  'Korisnicko ime je obavezno polje!';
+					this.usernameError =  'Molimo Vas da unesete korisničko ime!';
 				else if(this.password == "")
-					this.passwordError = 'Sifra je obavezno polje!';
+					this.passwordError = 'Molimo Vas da unesete lozinku!';
 				else
 					{
 					let data = {username: this.username, password : this.password};
@@ -74,7 +74,7 @@ Vue.component("login", {
 							  window.location.href = "/";
 						  }
 						  else{
-							  this.error = 'Uneti su pogresni podaci ili je korisnik blokiran!';
+							  this.error = 'Unesite tačne podatke ili je korisnički nalog blokiran';
 						  }
 
 						  
