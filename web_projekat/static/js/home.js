@@ -4,7 +4,8 @@ Vue.component("home-page", {
 	       
 	        visibleSearchBar: false,
 	        dateFrom:'',
-	        dateTo:''
+	        dateTo:'',
+	        userType:'NoUser'
 	    }
 },
 	template: ` 
@@ -64,7 +65,23 @@ Vue.component("home-page", {
 	
 	
 	
-			`, components : { 
+			`,
+			mounted () {
+	    axios
+        .get('/users/log/test')
+        .then(response => {
+        	if(response.data == null)
+        		this.userType='USER';
+        	else 
+        		if(response.data.typeOfUser == "Guest")
+        			this.userType='GUEST';
+        		else if(response.data.typeOfUser == "Host")
+        			this.userType='HOST';
+        		else 
+        			this.userType = 'ADMIN';
+        })
+	},
+			components : { 
 				vuejsDatepicker
 			},methods : {
 				  openSearch : function(){

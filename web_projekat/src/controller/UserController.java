@@ -22,7 +22,7 @@ public class UserController {
 	
 	public UserController(final UserService userService) {
 		
-		post("/users/registration", (req, res) ->{ 		
+	post("/users/registration", (req, res) ->{ 		
 			User u = gs.fromJson(req.body(), Guest.class);		
 			return userService.Register(u);		
 		});
@@ -53,6 +53,18 @@ public class UserController {
 		User user = ss.attribute("user");
 		return gs.toJson(user);
 	});
+	
+	get("/users/log/logout", (req, res) -> {
+		res.type("application/json");
+		Session ss = req.session(true);
+		User user = ss.attribute("user");
+		
+		if (user != null) {
+			ss.invalidate();
+		}
+		return true;
+	});
+	
 	
 	put("/users/account", (req,res)-> {
 		Session ss = req.session(true);

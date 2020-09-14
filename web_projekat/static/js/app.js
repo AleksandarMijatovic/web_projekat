@@ -17,6 +17,34 @@ const router = new VueRouter({
 var app = new Vue({
 	router,
 	el: '#webApp',
-    components : { vuejsDatepicker }
-});
+    components : { vuejsDatepicker },
+    data: {
+    	userType: "PROBA"
+	},
+	mounted (){
+		axios
+        .get('/users/log/test')
+        .then(response => {
+        	if(response.data == null)
+        		this. userType='USER';
+        	else{
+        		if(response.data.typeOfUser == "Guest")
+        			this. userType='GUEST';
+        		else if(response.data.typeOfUser == "Host")
+        			this.userType='HOST';
+        		else 
+        			this. userType = 'ADMIN';
+        	}
+        })
+	},methods : {
+		odjava : function(){
+			axios
+	          .get('/users/log/logout')
+	          .then(response => {
+	        		this.userType='USER';
 
+	        });
+			
+		}
+	}
+});

@@ -6,6 +6,9 @@
 	<link href="css/toast.css" rel="stylesheet" />
 	<link href="css/header.css" rel="stylesheet" type="text/css"/>
 	<link href="css/login.css" rel="stylesheet" type="text/css"/>
+	<link href="css/menubar.css" rel="stylesheet" type="text/css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+		
 	<meta charset="utf-8"/>
 </head> 
 
@@ -18,10 +21,65 @@
 			</div>
 				<div class="dugmici">
 					<ul>
-						<li><a href="#/login">PRIJAVA</a></li>
-						<li><a href="#/registration">REGISTRACIJA</a></li>
-						<li><a href="#/account">IZMENA PODATAKA</a>
-					</ul>
+					<li v-bind:hidden="userType!='ADMIN'">
+						<div class="dropdown">
+						    <button class="dropbtn">Korisnici 
+						      <i class="fa fa-angle-down"></i>
+						    </button>
+						    <div class="dropdown-content">
+						      <a href="#/users">Svi korisnici</a>
+						      <a href="#/register">Dodavanje domaćina</a>
+						    </div>
+					  </div> 
+					</li>
+					<li v-bind:hidden="userType!='HOST'">
+						<div class="dropdown">
+						    <button class="dropbtn">Korisnici 
+						      <i class="fa fa-angle-down"></i>
+						    </button>
+						    <div class="dropdown-content">
+						      <a href="#/users">Moji gosti</a>
+						    </div>
+					  </div> 
+					</li>
+					<li v-bind:hidden="userType!='ADMIN'">
+						<div class="dropdown">
+						    <button class="dropbtn">Apartmani 
+						      <i class="fa fa-angle-down"></i>
+						    </button>
+						    <div class="dropdown-content">
+						      <a href="#/amenities">Sadržaji apartmana</a>
+						  
+						    </div>
+					  </div> 
+					</li>
+					<li v-bind:hidden="userType!='HOST'">
+						<div class="dropdown">
+						    <button class="dropbtn">Apartmani 
+						      <i class="fa fa-angle-down"></i>
+						    </button>
+						    <div class="dropdown-content">
+						      <a href="#/apartment">Dodavanje apartmana</a>
+						    </div>
+					  </div> 
+					</li>
+					
+					<li><a v-bind:hidden="userType!='USER'" href="#/login">Prijava</a></li>
+					<li><a v-bind:hidden="userType!='USER'" href="#/register">Registracija</a></li>
+					<li><a v-bind:hidden="userType=='USER'" href="#/reservations">Rezervacije</a></li>		
+					<li v-bind:hidden="userType=='USER'">
+						<div class="dropdown">
+						    <button class="dropbtn">Nalog 
+						      <i class="fa fa-angle-down"></i>
+						    </button>
+						    <div class="dropdown-content">
+						      <a href="#/account">Profil</a>
+						      <a href="#/login" v-on:click="odjava">Odjava</a>
+						    </div>
+					  </div> 
+					</li>
+				
+				</ul>
 				</div>
 		</div>
 
