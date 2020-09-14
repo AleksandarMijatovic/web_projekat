@@ -5,7 +5,9 @@ Vue.component("home-page", {
 	        visibleSearchBar: false,
 	        dateFrom:'',
 	        dateTo:'',
-	        userType:'NoUser'
+	        userType:'NoUser',
+	        amenities: null,
+	        selectedAmenities: []
 	    }
 },
 	template: ` 
@@ -35,6 +37,13 @@ Vue.component("home-page", {
 			<td><input class="searchInput" placeholder="Maksimalna cena" min=0 type="number" v-model="maxPrice" name="maxPrice"/></td
 		</tr>
 		
+		<tr v-bind:hidden="!visibleSearchBar"><label>SADRŽAJ</label></tr>
+		<tr v-bind:hidden="!visibleSearchBar" v-for="(amenity, index) in amenities">
+			<input type="checkbox" v-bind:value="amenity" v-model="selectedAmenities" :value="amenity"/>
+          {{amenity.name}}
+		</tr>
+          
+		
 		<tr v-bind:hidden="!visibleSearchBar">
 			<td> TIP SMEŠTAJA
 				<select class="select" name="apartmentType" v-model="type">
@@ -51,8 +60,7 @@ Vue.component("home-page", {
 				</select>
 			
 			</td>
-			</tr>
-		<tr v-bind:hidden="!visibleSearchBar"><label>SADRŽAJ</label></tr>
+        </tr>
 		<tr v-bind:hidden="!visibleSearchBar">
 			<td><button class="button" >Pretraži</button></td>		
 			<td><button class="button" v-on:click="ponistipretragu">Poništi</button></td>		
@@ -67,6 +75,10 @@ Vue.component("home-page", {
 	
 			`,
 			mounted () {
+		axios
+	     .get('/amenity')
+	     .then(response => (this.amenities = response.data))
+	     
 	    axios
         .get('/users/log/test')
         .then(response => {

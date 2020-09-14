@@ -12,10 +12,11 @@ import java.util.List;
 import beans.Administrator;
 import beans.Gender;
 import beans.User;
+import controller.AmenityController;
 import controller.UserController;
 
 import dao.UserDao;
-
+import service.AmenityService;
 import service.UserService;
 
 
@@ -46,6 +47,7 @@ public class MainApp {
 				
 				
 				new UserController(new UserService(userDao));
+				new AmenityController(new AmenityService());
 				
 				System.out.println("asdad");
 			}
