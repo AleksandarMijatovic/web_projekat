@@ -1,0 +1,29 @@
+.buttonChangeUser{
+	background-color:rgb(102, 153, 153);
+	  color: white;
+	  border: none;
+	padding:5px 8px 5px 8px;
+	font-size: 17px;
+	border-radius: 7px;
+			outline: none;
+}
+
+.buttonSave{
+	background-color:rgb(102, 153, 153);
+	  color: white;
+	  border: none;
+	padding:5px 8px 5px 8px;
+	font-size: 17px;
+	border-radius: 7px;
+			outline: none;
+}
+
+.buttonChange{
+	background-color:rgb(102, 153, 153);
+	  color: white;
+	  border: none;
+	padding:5px 8px 5px 8px;
+	font-size: 17px;
+	border-radius: 7px;
+	outline: none;
+}

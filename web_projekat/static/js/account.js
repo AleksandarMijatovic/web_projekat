@@ -57,11 +57,11 @@ Vue.component("account", {
 			<td ><p style="color: red" >{{genderError}}</p></td>	
 		</tr>
 		<tr>
-			<td><button v-on:click="paswordChange" id="buttonPassword">Izmena lozinke</button><br /></td>		
+			<td><button class="buttonChangeUser" v-on:click="paswordChange" id="buttonPassword">Izmena lozinke</button><br /></td>		
 		</tr>
 		<tr>
 			<td align="right"><button v-on:click="checkFormValid" v-bind:hidden="mode!='EDIT'" class="buttonSave">Sacuvaj</button><button v-on:click="izmeniKlik" v-bind:disabled="mode=='PASSWORD'" class="buttonChangeUser">Izmeni</button></td>
-			<td><button v-on:click="odustanakEvent" class="buttonOdustanak">Odustanak</button><br /></td>
+			<td><button v-on:click="odustanakEvent" class="buttonChangeUser">Odustanak</button><br /></td>
 		</tr>
 	</table>
 </td>
@@ -87,7 +87,7 @@ Vue.component("account", {
 			<td colspan="3" align="center"><p style="color: red" >{{uniqueError}}</p></td>		
 		</tr>
 		<tr>
-			<td  align="right"><button v-on:click="izmenaLozinke" class="buttonChangeUser">Izmeni lozinku</button></td><td><button v-on:click="odustanaPasswordkEvent" class="buttonOdustanak">Odustani</button><br /></td>
+			<td  align="right"><button v-on:click="izmenaLozinke" class="buttonChangeUser">Izmeni lozinku</button></td><td><button v-on:click="odustanaPasswordkEvent" class="buttonChangeUser">Odustani</button><br /></td>
 		</tr>
 	</table>
 </td>

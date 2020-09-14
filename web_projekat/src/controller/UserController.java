@@ -21,12 +21,18 @@ public class UserController {
 	private static Gson gs = new Gson();
 	
 	public UserController(final UserService userService) {
+	
+	post("/users/addGuest", (req, res) ->{ 
 		
-	post("/users/registration", (req, res) ->{ 		
-			User u = gs.fromJson(req.body(), Guest.class);		
-			return userService.Register(u);		
-		});
-
+		User u = gs.fromJson(req.body(), Guest.class);
+		
+		return userService.Register(u);		
+	});
+	
+	post("/users/addHost", (req, res) ->{ 		
+		User u = gs.fromJson(req.body(), Host.class);		
+		return userService.Register(u);		
+	});
 		
 	get("/users/:username", (req,res) -> userService.getUser(req.params("username")));
 	
@@ -66,12 +72,24 @@ public class UserController {
 	});
 	
 	
-	put("/users/account", (req,res)-> {
+	put("/users/update", (req,res)-> {
 		Session ss = req.session(true);
-			String a = userService.Update(gs.fromJson(req.body(), Administrator.class));
+		User user = ss.attribute("user");
+		if(user instanceof Guest) {
+			String a = userService.Update(gs.fromJson(req.body(), Guest.class));
+			ss.attribute("user", gs.fromJson(a, Guest.class));
+			return a;
+		}
+		else if(user instanceof Host) {
+			String a =userService.Update(gs.fromJson(req.body(), Host.class));
+			ss.attribute("user", gs.fromJson(a, Host.class));
+			return a;
+		}
+		else {
+			String a =userService.Update(gs.fromJson(req.body(), Administrator.class));
 			ss.attribute("user", gs.fromJson(a, Administrator.class));
 			return a;
-		
+		}
 	});
 	
 	}

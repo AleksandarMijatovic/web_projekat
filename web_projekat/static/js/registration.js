@@ -18,12 +18,14 @@ Vue.component("registration", {
 			    genderError:'',
 			    againpasswordError:'',
 			    passwordError:'',
-			    uniqueError:''
+			    uniqueError:'',
+			    typeOfUser: null
 		    }
 	},
 	template: ` 
 <div>
-<h2 >Registracija</h2>
+<h2 v-bind:hidden="typeOfUser=='USER'">Registracija domacina</h2>
+<h2 v-bind:hidden="typeOfUser=='ADMIN'">Registracija</h2>
 <form v-on:submit.prevent="checkFormValid" method="post">
 <table class="table">
 		<tr>
@@ -69,7 +71,18 @@ Vue.component("registration", {
 </form>
 </div>
 `
-	, 
+		, mounted (){
+		axios
+        .get('/users/log/test')
+        .then(response => {
+        	if(response.data == null)
+        		this.typeOfUser='USER';
+        	else{
+        		this.typeOfUser = 'ADMIN';
+        	}
+        })
+	}
+		, 
 	methods : {
 		checkFormValid : function() {
 
@@ -110,15 +123,25 @@ Vue.component("registration", {
 		        	  if(response.data != null){
 		        		  this.uniqueError = "Uneto korisnicko ime vec postoji!";
 		        	  }else{
-		        		  let user = {username: this.username, name : this.name, surname : this.surname, gender : this.gender, password : this.password};
-		        		  axios
-				          .post('/users/registration', JSON.stringify(user))
-				          .then(response => {
-				        	  axios
-				        	  .post('/users/login', JSON.stringify({username: this.username, password : this.password}))
-				        	  .then(response => (window.location.href = "/"));
-				          });
+		        		  if(this.typeOfUser ==='USER'){
+			        		  let user = {blocked: false,username: this.username, name : this.name, surname : this.surname, gender : this.gender, password : this.password, typeOfUser : 'Guest' ,rentedAppartments: [], reservations : [] };
+			        		  axios
+					          .post('/users/addGuest', JSON.stringify(user))
+					          .then(response => {
+					        	  axios
+					        	  .post('/users/login', JSON.stringify({username: this.username, password : this.password}))
+					        	  .then(response => (window.location.href = "http://localhost:41/"));
+					          });
+							 
+		        		  }else{
+		        			  let user = {blocked: false, username: this.username, name : this.name, surname : this.surname, gender : this.gender, password : this.password, typeOfUser : 'Host', appartments: []};
+			        		  axios
+					          .post('/users/addHost', JSON.stringify(user))
+					          .then(response => (window.location.href = "http://localhost:41/"));
+		        		  }
+		        		  
 						}
+		        	  
 
 		          });
 				}
