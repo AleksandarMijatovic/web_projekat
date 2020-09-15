@@ -163,7 +163,36 @@ public class ApartmentDao {
 	    writer.close();
 	}
 	
-
+	public void deleteAllAmenities(int id) throws JsonSyntaxException, IOException {
+		ArrayList<Apartment> apartments = (ArrayList<Apartment>) GetAllFromFile();
+		for(Apartment a : apartments) {
+			for(Amenity am : a.getAmenities()) {
+				if(am.getId() == id) {
+					List<Amenity> amenities = a.getAmenities();
+					amenities.remove(am);
+					a.setAmenities(amenities);
+					break;
+				}
+			}
+		}
+		SaveAll(apartments);
+	}
+	
+	public void updateAllAmenities(Amenity amenity) throws JsonSyntaxException, IOException {
+		ArrayList<Apartment> apartments = (ArrayList<Apartment>) GetAllFromFile();
+		for(Apartment a : apartments) {
+			for(Amenity am : a.getAmenities()) {
+				if(am.getId() == amenity.getId()) {
+					List<Amenity> amenities = a.getAmenities();
+					amenities.remove(am);
+					amenities.add(amenity);
+					a.setAmenities(amenities);
+					break;
+				}
+			}
+		}
+		SaveAll(apartments);
+	}
 	
 
 

@@ -20,15 +20,27 @@ import beans.Amenity;
 public class AmenityDao {
 	private final String path = "./data/amenity.json";
 	private static Gson g = new Gson();
+	private static ApartmentDao apartmentDao;
 
 	public AmenityDao() {
 
 	}
 
-	public List<Amenity> GetAll() throws JsonSyntaxException, IOException{		
-		return g.fromJson((Files.readAllLines(Paths.get(path),Charset.defaultCharset()).size() == 0) ? "" : Files.readAllLines(Paths.get(path),Charset.defaultCharset()).get(0), new TypeToken<List<Amenity>>(){}.getType());
+	public AmenityDao(ApartmentDao apartmentDao) {
+		this.apartmentDao = apartmentDao;
 	}
-
+	
+	
+	public List<Amenity> GetAll() throws JsonSyntaxException, IOException{
+		List<Amenity> retVal = new ArrayList<Amenity>();
+		List<Amenity> fromFile = g.fromJson((Files.readAllLines(Paths.get(path),Charset.defaultCharset()).size() == 0) ? "" : Files.readAllLines(Paths.get(path),Charset.defaultCharset()).get(0), new TypeToken<List<Amenity>>(){}.getType());
+		if(fromFile != null) {
+			for(Amenity a: fromFile)
+				if(!a.isDeleted())
+					retVal.add(a);
+		}
+		return retVal;
+	}
 	public Amenity Create(Amenity amenity) throws JsonSyntaxException, IOException {
 		ArrayList<Amenity> amenities = (ArrayList<Amenity>) GetAll();
 		amenity.setId(GetMaxID());
@@ -49,6 +61,7 @@ public class AmenityDao {
 			}
 		}
 		SaveAll(amenities);
+		apartmentDao.updateAllAmenities(amenity);
 		return amenity;
 	}
 
@@ -64,11 +77,6 @@ public class AmenityDao {
 		return ++maxId;
 	}
 
-	public void SaveAll(Collection<Amenity> amenities) throws JsonIOException, IOException{
-	    Writer writer = new FileWriter(path);
-		g.toJson(amenities, writer);
-	    writer.close();
-	}
 	
 	public Amenity Delete(String id) throws JsonSyntaxException, IOException {
 		ArrayList<Amenity> amenities = (ArrayList<Amenity>) GetAll();
@@ -81,6 +89,13 @@ public class AmenityDao {
 			}
 		}
 		SaveAll(amenities);
+		apartmentDao.deleteAllAmenities(Integer.parseInt(id));
 		return retVal;
+	}
+	
+	public void SaveAll(Collection<Amenity> amenities) throws JsonIOException, IOException{
+	    Writer writer = new FileWriter(path);
+		g.toJson(amenities, writer);
+	    writer.close();
 	}
 }

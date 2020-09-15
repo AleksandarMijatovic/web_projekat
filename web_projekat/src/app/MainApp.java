@@ -15,6 +15,7 @@ import beans.User;
 import controller.AmenityController;
 import controller.ApartmentController;
 import controller.UserController;
+import dao.AmenityDao;
 import dao.ApartmentDao;
 import dao.UserDao;
 import service.AmenityService;
@@ -47,10 +48,10 @@ public class MainApp {
 				
 				UserDao userDao = new UserDao();
 				ApartmentDao apartmentDAO = new ApartmentDao(userDao);
-
+				AmenityDao amenityDao = new AmenityDao(apartmentDAO);
 				
 				new UserController(new UserService(userDao));
-				new AmenityController(new AmenityService());
+				new AmenityController(new AmenityService(amenityDao));
 				new ApartmentController(new ApartmentService(apartmentDAO));
 
 				System.out.println("asdad");

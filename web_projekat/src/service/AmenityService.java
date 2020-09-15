@@ -12,10 +12,9 @@ public class AmenityService {
 	private static Gson g = new Gson();
 	private static AmenityDao amenityDao;
 
-	public AmenityService() {
-		this.amenityDao = new AmenityDao();
+	public AmenityService(AmenityDao amenityDao) {
+		this.amenityDao = amenityDao;
 	}
-
 
 	public String Create(Amenity amenity) throws JsonSyntaxException, IOException {
 		try {
