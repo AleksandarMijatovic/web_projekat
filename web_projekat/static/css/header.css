@@ -36,9 +36,25 @@ li {
 }
 
 .searchtable {
-	width: 30%; }
+	width: 30%;
+	float: left; }
 tr{margin:0px 20px 0px 20px;}
 
+.apartview{
+	width: 65%;"
+	margin-left:15px;
+	margin-right:15px;
+	margin-bottom:25px;
+	font-style:italic;
+	border: solid 2px rgb(102, 153, 153);
+	
+	border-top-right-radius: 10px;
+	border-bottom-left-radius: 10px;
+	
+	float:right;
+	
+	
+}
 .select{
 	font-size: 18px;
 	border-radius: 10px;

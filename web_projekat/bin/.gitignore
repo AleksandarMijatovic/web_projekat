@@ -1,4 +1,5 @@
-/controller/
-/dao/
 /service/
+/dao/
+/controller/
+/beans/
 /app/

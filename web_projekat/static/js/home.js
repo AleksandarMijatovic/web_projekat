@@ -7,7 +7,8 @@ Vue.component("home-page", {
 	        dateTo:'',
 	        userType:'NoUser',
 	        amenities: null,
-	        selectedAmenities: []
+	        selectedAmenities: [],
+	    	apartments: null
 	    }
 },
 	template: ` 
@@ -68,17 +69,40 @@ Vue.component("home-page", {
 		</tr>
 		
 	</table>
-	
-		</div>
-	
-	
-	
-			`,
+	<div v-on:click="selectApartment(apartment.id)"  v-for="(apartment, index) in apartments" style = "margin-left:auto;margin-right:auto;padding:20px;">
+          <table class="apartview" v-bind:hidden="showSearched" >
+          		<tr>
+          			<td rowspan="4" style="width:50%;height:85%">
+                        <img :src="apartment.pictures[0]" alt="Detalji" height="250" width="325" style="border:5px transparent;border-radius: 10px;margin-left:25px;">
+          			<td><label v-if="apartment.type === 'room'">Soba</label>
+          			<label v-else>Ceo apartman</label></td>
+          			</td>
+         
+          			
+          		</tr>
+          		<tr>
+          			<td><label>Adresa: </label>
+          			<label style="margin-left:25px;">{{apartment.location.adress.city}} - {{apartment.location.adress.street}} {{apartment.location.adress.streetNumber}}</label></td>
+          		</tr>
+          		<tr>
+          			<td><label>Broj gostiju: </label>
+          			<label style="margin-left:50px;">{{apartment.numberOfGuest}}</label></td>
+          		</tr>
+          		<tr>
+          			<td><label>Cena:</label>
+          			<label style="margin-left:50px;">{{apartment.priceForNight}} din po nocenju</label></td>
+          		</tr>
+          
+          </table>
+	</div>
+</div>	`,
 			mounted () {
 		axios
 	     .get('/amenity')
-	     .then(response => (this.amenities = response.data))
-	     
+	     .then(response => (this.amenities = response.data)),
+	    axios
+	      .get('/apartments')
+	      .then(response => (this.apartments = response.data)), 
 	    axios
         .get('/users/log/test')
         .then(response => {

@@ -11,7 +11,7 @@ public class Apartment {
 	private Location location;
 	private List<Period> dateForRenting;
 	private List<Long> freeDateForRenting;
-	private String host;
+	private Host host;
 	private List<Comment> comments;
 	private List<String> pictures;
 	private double priceForNight;
@@ -29,7 +29,7 @@ public class Apartment {
 
 
 	public Apartment(int id,ApartType type, int numberOfRoom, int numberOfGuest, Location location,
-			List<Period> dateForRenting, List<Long> freeDateForRenting, String host, List<Comment> comments,
+			List<Period> dateForRenting, List<Long> freeDateForRenting, Host host, List<Comment> comments,
 			List<String> pictures, double priceForNight, String checkInTime, String checkOutTime, ApartStatus status,
 			List<Amenity> amenities, List<Reservation> reservations) {
 		super();
@@ -121,12 +121,12 @@ public class Apartment {
 	}
 
 
-	public String getHost() {
+	public Host getHost() {
 		return host;
 	}
 
 
-	public void setHost(String host) {
+	public void setHost(Host host) {
 		this.host = host;
 	}
 

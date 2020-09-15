@@ -13,10 +13,12 @@ import beans.Administrator;
 import beans.Gender;
 import beans.User;
 import controller.AmenityController;
+import controller.ApartmentController;
 import controller.UserController;
-
+import dao.ApartmentDao;
 import dao.UserDao;
 import service.AmenityService;
+import service.ApartmentService;
 import service.UserService;
 
 
@@ -44,11 +46,13 @@ public class MainApp {
 				});
 				
 				UserDao userDao = new UserDao();
-				
+				ApartmentDao apartmentDAO = new ApartmentDao(userDao);
+
 				
 				new UserController(new UserService(userDao));
 				new AmenityController(new AmenityService());
-				
+				new ApartmentController(new ApartmentService(apartmentDAO));
+
 				System.out.println("asdad");
 			}
 
