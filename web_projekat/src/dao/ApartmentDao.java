@@ -27,6 +27,7 @@ import com.google.gson.reflect.TypeToken;
 import Decoder.BASE64Decoder;
 import beans.Amenity;
 import beans.Apartment;
+import beans.Host;
 import beans.ApartStatus;
 
 
@@ -134,9 +135,31 @@ public class ApartmentDao {
 		return null;
 	}
 	
-	
-	
-	
+	public List<Apartment> GetAllApartmentForUser(int typeUser, String username) throws JsonSyntaxException, IOException{		
+		List<Apartment> retVal = new ArrayList<Apartment>();
+		ArrayList<Apartment> apartments = (ArrayList<Apartment>) GetAll();
+		
+		if(apartments!=null) {
+			for(Apartment a : apartments) {
+				Host h = (Host) userDao.get(a.getHost().getUsername());
+					if(typeUser == 0) {
+						if(a.getStatus()==ApartStatus.active) {
+							if(!h.isBlocked())
+								retVal.add(a);
+						}
+					}else if(typeUser == 1) {
+						if(a.getHost().getUsername().equals(username)) {
+							retVal.add(a);
+						}
+					}
+					else {
+						retVal.add(a);
+					}
+				}
+		}
+		
+		return retVal;
+	}
 	
 	
 	

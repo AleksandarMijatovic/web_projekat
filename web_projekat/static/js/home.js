@@ -125,7 +125,11 @@ Vue.component("home-page", {
 				  },
 				  ponistipretragu : function(){
 					  this.visibleSearchBar=false;
-				  }
-			}
+				  },
 			
+			selectApartment : function(id) {
+	        	window.location.href = "#/apartmentDetails?id=" + id;
+	    	}
+			
+			}
 	});

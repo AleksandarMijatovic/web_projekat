@@ -43,9 +43,9 @@ Vue.component("apartment", {
 <div>
 
 <form v-on:submit.prevent="checkFormValid" method="post">
-<table  style="width:100%">
-<tr>
-<td style="width:50%">
+<div class="row">
+  <div class="column" >
+    <h2>Opis apartmana:</h2>
 	<table class="table"  style="width:60%">
 		<tr>
 			<td>Tip apartmana:</td>
@@ -66,7 +66,7 @@ Vue.component("apartment", {
 			<td ><p style="color: red" >{{numberOfGuestsError}}</p></td>	
 		</tr>
 		<tr>
-			<td>Cena po noci:</td>
+			<td>Cena po noći:</td>
 			<td><input class="input" placeholder="Unestice cenu" type="number" min="0" v-model="price" name="price"></td>
 			<td>din</td>
 			<td ><p style="color: red" >{{priceError}}</p></td>	
@@ -94,55 +94,51 @@ Vue.component("apartment", {
 		<tr>
 			<td colspan="2"><h3>Unesite lokaciju:</h3></td>
 		</tr>
+			
 		<tr>
-			<td colspan="2">
-			<div class="form-group">
-	    		<label for="form-address">Adresa</label>
-	    		<input type="search" class="form-control" id="form-address" placeholder="Unesite adresu" />
-			</div>
-			<br/>
-			<div >
-	    		<label >Broj:</label>
-	    		<input type="number" min="1" v-model="streetNumber" name="streetNumber" class="form-control"  placeholder="Unesite broj" />
-	    		<p style="color: red" >{{streetNumberError}}</p>
-			</div>
-			<br/>
-			<div class="form-group">
-		    	<label for="form-city">Ulica:</label>
-		    	<input type="text" class="form-control" v-model="street" name="street" id="form-street">
-			</div>
-			<br/>
-
-			<div class="form-group">
-		    	<label for="form-city">Grad:</label>
-		    	<input type="text" class="form-control" v-model="city" name="city"  id="form-city">
-			</div>
-			<br/>
-			<div class="form-group">
-		    	<label for="form-zip">Postanski broj:</label>
-		    	<input type="text" class="form-control" v-model="zip" name="zip" id="form-zip">
-			</div>
-			<br/>
-			<div class="form-group">
-		    	<label for="form-longitude">Geografska duzina:</label>
-		    	<input type="text" class="form-control" v-model="longitude" name="longitude" id="form-longitude">
-			</div>
-			<br/>
-			<div class="form-group">
-				<label for="form-latitude">Geografska sirina</label>
-		    	<input type="text" class="form-control"  v-model="latitude" name="latitude" id="form-latitude">
-			</div>
-			<div>
-				<p style="color: red" >{{streetError}}</p>
-			</div>
-			</td>
+			<td><label>Ulica:</label></td>
+			<td><input class="input" type="text" v-model="street" name="street"placeholder="Unesite ulicu"></td>
+			
 		</tr>
-
+		
+		<tr>
+			<td><label >Broj:</label></td>
+			<td><input class="input" type="number" min="1" v-model="streetNumber" name="streetNumber"  placeholder="Unesite broj" /></td>
+		</tr>
+		
+		
+			<tr>
+			<td><label >Grad:</label></td>
+			<td><input class="input" type="text" v-model="city" name="city"  placeholder="Unesite grad"></td>
+			
+		</tr>
+	    		
+	    			
+		<tr>
+			<td><label>Poštanski broj:</label></td>
+			<td><input class="input" type="text" v-model="zip" name="zip" placeholder="Unesite poštanski broj"></td>
+			
+		</tr>
+	    		
+		<tr>
+			<td><label>Geografska dužina:</label></td>
+			<td><input class="input" type="float" c v-model="longitude" name="longitude" placeholder="Unesite dužinu"></td>
+			
+		</tr>
+	    		
+	    			
+		<tr>
+			<td><label>Geografska širina</label></td>
+			<td><input class="input" type="float"   v-model="latitude" name="latitude" placeholder="Unesite širinu"></td>
+			
+		</tr>
+	 
 	</table>
-</td>
-<td style="vertical-align:top">
-	<div style="float:left">
-	<h1>Sadrzaj apartmana:</h1>
+
+  </div>
+  <div class="column" >
+	<h2>Sadržaj apartmana:</h2>
+	
 	
 	<table class="tableAmenities">
 		<tr v-for="(amenity, index) in amenities">
@@ -151,24 +147,29 @@ Vue.component("apartment", {
           </br>
         </tr>
 	</table>
-	</div>
-</td>
-</tr>
-</table>	    
-  
-<input v-if="imageCount < 5" type="file" @change="onFileChange" />
+
+	</br>
+	<h2>Izaberite slike:</h2>
+		<input v-if="imageCount < 5" type="file" @change="onFileChange" />
         <input v-else type="file" @change="onFileChange" disabled="true"/>
  
  
-    <table>
-        <tr>
-            <td v-for="(url, index) in images"  >
-                <img :src="url" :width="width" v-on:click="deleteImage(index)" />
-            </td>
-        </tr>
-    </table>
+		<table>
+        	<tr>
+				<td v-for="(url, index) in images"  >
+                	<img :src="url" :width="width" v-on:click="deleteImage(index)" />
+				</td>
+        	</tr>
+		</table>
 
-			<td colspan="3" align="center"><input type="submit"  value="Unesi apartman"/></td>
+
+     </div>
+</div>
+		
+	
+
+				<input style="float:right;margin-right:50px" type="submit"  value="Unesi apartman"/>
+		
 
 </form>	
 

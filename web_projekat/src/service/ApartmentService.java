@@ -37,4 +37,22 @@ public class ApartmentService {
 		return null;
 	}
 	
+	public String getApartment(String id) {
+		try {
+			return g.toJson(apartmentDao.get(id));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return g.toJson(null);
+	}
+	
+	public String GetAllForUser(int userType, String username) {
+		try {
+			return g.toJson(apartmentDao.GetAllApartmentForUser(userType, username));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
 }

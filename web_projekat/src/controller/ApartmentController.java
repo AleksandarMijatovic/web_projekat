@@ -37,13 +37,38 @@ public class ApartmentController {
 			return apartmentService.Create(a);
 		});
 		
-		get("/apartments", (req,res) -> {
+		/*get("/apartments", (req,res) -> {
 			Session ss = req.session(true);
 			User user = ss.attribute("user");
 			
 			return apartmentService.GetAll();
-		});
+		});*/
+		
+		get("/apartment/:id", (req,res) -> apartmentService.getApartment(req.params("id")));
 
+		get("/apartments", (req,res) -> {
+			Session ss = req.session(true);
+			User user = ss.attribute("user");
+			int userType = -1;
+			if(user instanceof Guest || user==null)
+				userType = 0;
+			else if(user instanceof Host)
+				userType = 1;
+			else 
+				userType = 2;
+			
+			String username;
+			if(user==null) 
+				username="";
+			else {
+				username=user.getUsername();
+			}
+			
+			
+			
+			return apartmentService.GetAllForUser(userType,username);
+			
+		});
 	}
 }
 
