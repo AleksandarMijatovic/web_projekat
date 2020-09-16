@@ -61,4 +61,34 @@ public class UserService {
 		}
 		return g.toJson(null);
 	}
+	
+	public String GetAll(int whatToGet, String username) {
+		try {
+			return g.toJson(userdao.GetAllByUserType(whatToGet, username));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public boolean toggleBlockUser(String username) {
+		try {
+			return userdao.toggleBlockUser(username);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
+	}
+
+	public String searchUsers(String username, String name, String surname, String userType, String pol,int whatToGet, String usernameF) {
+		try {
+			return g.toJson(userdao.searchUsers(username, name, surname, userType,pol, whatToGet, usernameF));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	
 }

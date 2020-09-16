@@ -92,5 +92,35 @@ public class UserController {
 		}
 	});
 	
+	get("/users/search/parameters", (req,res) -> {
+		Session ss = req.session(true);
+		User user = ss.attribute("user");
+		int whatToGet = -1;
+		if(user instanceof Guest)
+			whatToGet = 0;
+		else if(user instanceof Host)
+			whatToGet = 1;
+		else 
+			whatToGet = 2;
+		return userService.searchUsers(req.queryParams("username"), req.queryParams("name"), req.queryParams("surname"), req.queryParams("userType"), req.queryParams("gender"), whatToGet, user.getUsername());
+	});
+
+	get("/users", (req,res) -> {
+		
+		Session ss = req.session(true);
+		User user = ss.attribute("user");
+		int whatToGet = -1;
+		if(user instanceof Guest)
+			whatToGet = 0;
+		else if(user instanceof Host)
+			whatToGet = 1;
+		else 
+			whatToGet = 2;
+		return userService.GetAll(whatToGet, user.getUsername());
+	});
+	
+	put("/users/toggleBlocked/:username", (req,res)->(userService.toggleBlockUser(req.params("username"))));
+	
+	
 	}
 }

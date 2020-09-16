@@ -20,7 +20,7 @@ import beans.Apartment;
 import beans.Gender;
 import beans.Guest;
 import beans.Host;
-
+import beans.Reservation;
 import beans.User;
 import beans.TypeOfUser;
 import adapterdao.RuntimeTypeAdapterFactory;
@@ -96,5 +96,69 @@ public class UserDao {
 		}
 		
 		return null;
+	}
+	
+	public List<User> GetAllByUserType(int whatToGet, String username) throws JsonSyntaxException, IOException{		
+		ArrayList<User> users = (ArrayList<User>) GetAll();
+		List<User> retVal = new ArrayList<User>();
+		for(User u : users) {
+			if(whatToGet == 1) {
+				if(u instanceof Guest) {
+					for(Reservation r : ((Guest)u).getReservations()) {
+						if(r.getAppartment().getHost().getUsername().equals(username)) {
+							if(!u.isBlocked())
+								retVal.add(u);
+							break;
+						}
+					}
+				}
+			}else {
+				retVal.add(u);
+			}
+		}
+	
+		return retVal;
+	}
+	
+	public boolean toggleBlockUser(String username) throws JsonIOException, IOException {
+		ArrayList<User> users = (ArrayList<User>) GetAll();
+		for(User u : users) {
+			if(u.getUsername().equals(username)){
+				if(u.isBlocked())
+					u.setBlocked(false);
+				else
+					u.setBlocked(true);
+				break;
+			}
+		}
+		SaveAll(users);
+		
+		return true;
+	}
+	
+	public List<User> searchUsers(String username, String name, String surname, String userType, String pol,int whatToGet, String usernameF) throws JsonSyntaxException, IOException{
+		Gender gender = Gender.male;
+		if(pol.equals("female"))
+			gender = Gender.female;
+		
+		TypeOfUser tip = TypeOfUser.Guest;
+		if(userType.equals("Guest"))
+			tip = TypeOfUser.Guest;
+		else if(userType.equals("Host"))
+			tip = TypeOfUser.Host;
+		else if(userType.equals("Administrator"))
+			tip = TypeOfUser.Administrator;
+		
+		ArrayList<User> list = (ArrayList<User>) GetAllByUserType(whatToGet, usernameF);
+		List<User> retVal = new ArrayList<User>();
+
+		for(User user : list) {
+			if(((!username.isEmpty()) ? user.getUsername().equals(username) : true) && ((!name.isEmpty()) ? user.getName().equals(name) : true) 
+				&& ((!surname.isEmpty()) ? user.getSurname().equals(surname) : true) && ((!userType.isEmpty()) ? tip == user.getUserType() : true) && ((!pol.isEmpty()) ? gender == user.getGender() : true)) {
+					retVal.add(user);
+			}
+		}		
+		return retVal;
+
 	}
 }
