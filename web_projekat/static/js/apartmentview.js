@@ -25,16 +25,18 @@ Vue.component("apartment-details", {
 
 <div class="row">
   <div class="column" >
-			<div class="rowS">
-					<div v-for="p in apartment.pictures" class="columnS">
-							<img :src="p" alt="Slika apartmana" style="width:80%" v-on:click="myFunction(p)"/>
-					</div>
-			</div>
+			
 			
 			<div class="containerG" ref="container">
 				<a target="_blank" :href="picture">
 						<img ref="expandedImg" :src="picture" style="width:80%"/>
 			  	</a>
+			</div>
+			
+			<div class="rowS">
+					<div v-for="p in apartment.pictures" class="columnS">
+							<img :src="p" alt="Slika apartmana" style="width:80%" v-on:click="myFunction(p)"/>
+					</div>
 			</div>
 		</div>	
 	<div class="column" >	
@@ -76,20 +78,12 @@ Vue.component("apartment-details", {
 		</tr>
 		</table>
 </div>
-
-<tr v-bind:hidden="userType != 'GUEST'">
-					<td colspan="2"><button class="buttonBris" v-on:click="rezervisiClick">Rezervisi</button><br/></td>
-				</tr>
-				<tr v-bind:hidden="userType != 'HOST' && userType != 'ADMIN'">
-					<td><button class="buttonSave" v-on:click="izmeniClick">Izmeni</button><br/></td>
-					<td><button class="buttonRed" v-on:click="deleteClick">Izbrisi</button><br/></td>
-				</tr>
-				
-				<tr v-bind:hidden="userType != 'HOST' && userType != 'ADMIN'">
-					<td v-bind:hidden="isActive === 'active'" colspan="2"><button class="buttonSave" v-on:click="activate">Aktiviraj</button><br/></td>
-					<td v-bind:hidden="isActive === 'inactive'" colspan="2"><button class="buttonRed" v-on:click="deactivate">Deaktiviraj</button><br/></td>
-				</tr>
+</div>
+<div class="row">
+<div class="column" >
+		<table>
 				<tr v-bind:hidden="userType != 'HOST'"><td colspan="2">Dodavanje perioda za izdavanje: </td></tr>
+				</br>
 				<tr v-bind:hidden="userType != 'HOST'">
 					<td>Datum od: <vuejs-datepicker :disabled-dates="disabledDates" v-model="dateFrom"></vuejs-datepicker></td>
 					<td>Datum do: <vuejs-datepicker :disabled-dates="disabledDates" v-model="dateTo"></vuejs-datepicker></td>
@@ -97,10 +91,25 @@ Vue.component("apartment-details", {
 				<tr v-bind:hidden="userType != 'HOST'">
 					<td colspan="2"><button class="buttonSave" v-on:click="addPeriod">Dodaj</button><br/></td>
 				</tr>
+				<tr v-bind:hidden="userType != 'GUEST'">
+					<td colspan="2"><button class="buttonBris" v-on:click="rezervisiClick">Rezerviši</button><br/></td>
+				</tr>
+				</br>
+				<tr v-bind:hidden="userType != 'HOST' && userType != 'ADMIN'"><td colspan="2" >Upravljanje apartmanom: </td></tr>
+				<tr v-bind:hidden="userType != 'HOST' && userType != 'ADMIN'">
+					<td><button class="buttonSave" v-on:click="izmeniClick">Izmeni</button><br/></td>
+					<td><button class="buttonSave" v-on:click="deleteClick">Izbriši</button><br/></td>
+					<td v-bind:hidden="isActive === 'active'" colspan="2"><button class="buttonSave" v-on:click="activate">Aktiviraj</button><br/></td>
+					<td v-bind:hidden="isActive === 'inactive'" colspan="2"><button class="buttonSave" v-on:click="deactivate">Deaktiviraj</button><br/></td>
+				</tr>
+				
+				
 				<tr>
 					<p style="color: red" >{{error}}</p>
 				</tr>
 			</table>	
+</div>	
+	<div class="column" >		
 <table class="komentari" v-bind:hidden="comments.length == 0">
 		<h3>Komentari: </h3>
 		<tr>
@@ -137,14 +146,15 @@ Vue.component("apartment-details", {
 			<td colspan="2"><textarea class="inputComment"  name="comment" placeholder="Unesite komentar" cols="70" rows="10" v-model="comment"></textarea></td>
 		</tr>
 		<tr>
-			<td><button class="buttonBris" v-on:click="commentClick">Dodaj komentar</button><br/></td>
+			<td><button class="buttonSave" v-on:click="commentClick">Dodaj komentar</button><br/></td>
 		</tr>
 		<tr>
 			<td colspan="2"><p style="color: red" >{{commentError}}</p></td>		
 		</tr>
 		
 </table>
-
+</div>
+</div>
 </div>		  
 `, components : { 
 		vuejsDatepicker
