@@ -1,11 +1,13 @@
 package service;
 
 import java.io.IOException;
+import java.util.List;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 
 import beans.Apartment;
+import beans.Amenity;
 
 import dao.ApartmentDao;
 
@@ -49,6 +51,15 @@ public class ApartmentService {
 	public String GetAllForUser(int userType, String username) {
 		try {
 			return g.toJson(apartmentDao.GetAllApartmentForUser(userType, username));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public String searchApartments(String location, String datFrom, String dateTo, String numberOfGuest,String minRoom, String maxRoom, String minPrice, String maxPrice, String sortValue, String type, String apartmentStatus,List<Amenity> amenities, int userType , String username) {
+		try {
+			return g.toJson(apartmentDao.searchApartments(location, datFrom, dateTo, numberOfGuest, minRoom, maxRoom, minPrice, maxPrice,sortValue,type,apartmentStatus,amenities,userType,username));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

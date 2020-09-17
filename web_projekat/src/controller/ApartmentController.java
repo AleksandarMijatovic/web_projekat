@@ -69,6 +69,28 @@ public class ApartmentController {
 			return apartmentService.GetAllForUser(userType,username);
 			
 		});
+		
+		get("/apartments/search/parameters", (req,res) -> {
+			Session ss = req.session(true);
+			User user = ss.attribute("user");
+			int userType = -1;
+			if(user instanceof Guest)
+				userType = 0;
+			else if(user instanceof Host)
+				userType = 1;
+			else 
+				userType = 2;
+			
+			String username;
+			if(user==null) 
+				username="";
+			else {
+				username=user.getUsername();
+			}
+			
+
+			return apartmentService.searchApartments(req.queryParams("location"), req.queryParams("dateFrom"), req.queryParams("dateTo"), req.queryParams("numberOfGuest"), req.queryParams("minRoom"), req.queryParams("maxRoom"), req.queryParams("minPrice"), req.queryParams("maxPrice"), req.queryParams("sortValue"), req.queryParams("type"), req.queryParams("apartmentStatus"),g.fromJson(req.queryParams("amenities"), new TypeToken<List<Amenity>>(){}.getType()),userType,username);
+		});
 	}
 }
 

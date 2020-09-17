@@ -29,8 +29,7 @@ import beans.Amenity;
 import beans.Apartment;
 import beans.Host;
 import beans.ApartStatus;
-
-
+import beans.ApartType;
 import beans.Period;
 
 
@@ -217,6 +216,128 @@ public class ApartmentDao {
 		SaveAll(apartments);
 	}
 	
+public List<Apartment> searchApartments(String location, String dateFrom, String dateTo, String numberOfGuest,String minRoom, String maxRoom, String minPrice, String maxPrice, String sortValue, String type, String apartmentStatus,List<Amenity> amenities,int userType , String username) throws JsonSyntaxException, IOException{
+		
+		
+		
+		ArrayList<Apartment> list = (ArrayList<Apartment>) GetAllApartmentForUser(userType, username);
+		List<Apartment> retVal = new ArrayList<Apartment>();
+					
+		ApartType tip;
+		if(type.equals("soba"))
+			tip = ApartType.room;
+		else
+			tip = ApartType.apartment;
+		
+		ApartStatus status;
+		if(apartmentStatus.equals("aktivan"))
+			status = ApartStatus.active;
+		else
+			status = ApartStatus.inactive;
 
+		//datefrom//dateto
+		for(Apartment item : list) {
+			if((!location.isEmpty() ? item.getLocation().getAdress().getCity().toLowerCase().contains(location.toLowerCase()) : true) 
+					&& (!numberOfGuest.isEmpty()? item.getNumberOfGuest()>=Integer.parseInt(numberOfGuest):true)
+					&& ((!minRoom.isEmpty())? (item.getNumberOfRoom()>=Integer.parseInt(minRoom)) :true)
+					&&((!maxRoom.isEmpty())? (item.getNumberOfRoom()<=Integer.parseInt(maxRoom)): true)
+					&& ((!minPrice.isEmpty())? (item.getPriceForNight()>=Integer.parseInt(minPrice)) :true)
+					&&((!maxPrice.isEmpty())? (item.getPriceForNight()<=Integer.parseInt(maxPrice)): true)
+					&&((!apartmentStatus.isEmpty())? (item.getStatus()==status): true)
+					&&((!type.isEmpty())? (item.getType()==tip): true)) {
+				if(!dateFrom.isEmpty() || !dateTo.isEmpty()){
+					for(long datum : item.getFreeDateForRenting()) {
+						if(((!dateFrom.isEmpty())? datum >= Long.parseLong(dateFrom) : true) && ((!dateTo.isEmpty()) ? datum <= Long.parseLong(dateTo) : true)) {
+								if(amenities!=null) {
+									if(userType==1) {
+										if(item.getStatus()==ApartStatus.active)
+											if(uporediListe(item.getAmenities(), amenities))
+												retVal.add(item);
+									}
+									else {
+										if(uporediListe(item.getAmenities(), amenities))
+											retVal.add(item);
+									}
+								}else {
+									if(userType==1) {
+										if(item.getStatus()==ApartStatus.active)
+												retVal.add(item);
+									}else {
+										retVal.add(item);
+									}
+								}
+								
+								break;
+						}
+					}
+				}else {
+					if(amenities!=null) {
+						if(userType==1) {
+							if(item.getStatus()==ApartStatus.active)
+								if(uporediListe(item.getAmenities(), amenities))
+									retVal.add(item);
+						}
+						else {
+							if(uporediListe(item.getAmenities(), amenities))
+								retVal.add(item);
+						}
+					}else {
+						if(userType==1) {
+							if(item.getStatus()==ApartStatus.active)
+									retVal.add(item);
+						}else {
+							retVal.add(item);
+						}
+					}
+				}
+				
+			}
+					
+
+		}	
+		
+		
+
+					
+		if(sortValue.equals("rastuca")) {
+			Collections.sort(retVal, new Comparator<Apartment>() {
+				@Override
+				public int compare(Apartment o1, Apartment o2) {
+					// TODO Auto-generated method stub
+					return (int)(o1.getPriceForNight() - o2.getPriceForNight());
+				}
+			});	
+		}else if(sortValue.equals("opadajuca")) {
+			Collections.sort(retVal, new Comparator<Apartment>() {
+				@Override
+				public int compare(Apartment o1, Apartment o2) {
+					// TODO Auto-generated method stub
+					return (int)(o2.getPriceForNight() - o1.getPriceForNight());
+				}
+			});	
+		}
+		
+		return retVal;
+
+	}
+
+private boolean uporediListe(List<Amenity> listaApartmana,List<Amenity> listaPretrage){
+	
+	
+	for(Amenity itemPretrage : listaPretrage) {
+		boolean postoji=false;
+		for(Amenity itemApartmana : listaApartmana) {
+			if(itemApartmana.getId()==itemPretrage.getId()) {
+				postoji=true;
+			}
+		}
+		if(!postoji) {
+			return false;
+		}
+		
+	}
+	
+	return true;
+}
 
 }

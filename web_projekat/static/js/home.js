@@ -2,13 +2,26 @@ Vue.component("home-page", {
 	data: function () {
 	    return {
 	       
-	        visibleSearchBar: false,
+	    	apartments: null,
+	        width:'50%',
+	        location:'',
 	        dateFrom:'',
 	        dateTo:'',
-	        userType:'NoUser',
-	        amenities: null,
+	        numberOfGuest:'',
+	        minRoom:'',
+	        maxRoom:'',
+	        minPrice:'',
+	        maxPrice:'',
+	        searchedApartments: null,
+	        showSearched:false,
 	        selectedAmenities: [],
-	    	apartments: null
+	        sortValue:'',
+	        visibleSearchBar: false,
+	        amenities: null,
+	        type: '',
+	        apartmentStatus: '',
+	        userType: 'default'
+	        
 	    }
 },
 	template: ` 
@@ -18,8 +31,8 @@ Vue.component("home-page", {
 			<td><button class="button" v-on:click="openSearch">Otvori pretragu</button></td>	
 		</tr>
 		<tr v-bind:hidden="!visibleSearchBar" >
-			<td>LOKACIJA<input class="searchInput" placeholder="Lokacija" type="text" /></td>
-			<td>BROJ OSOBA<input class="searchInput" placeholder="Broj osoba" min=0 type="number"  /></td>
+			<td>LOKACIJA<input class="searchInput" placeholder="Lokacija" type="text" v-model="location" name="location" /></td>
+			<td>BROJ OSOBA<input class="searchInput" placeholder="Broj osoba" min=0 type="number" v-model="numberOfGuest" name="numberOfGuest" /></td>
 			
 		</tr>
 		<tr v-bind:hidden="!visibleSearchBar"><label>DATUM</label></tr>
@@ -29,8 +42,8 @@ Vue.component("home-page", {
 		</tr>
 		<tr v-bind:hidden="!visibleSearchBar"><label>BROJ SOBA</label></tr>
 		<tr v-bind:hidden="!visibleSearchBar">
-			<td><input class="searchInput" placeholder="Minimalno soba" min=0 type="number" /></td>
-			<td><input class="searchInput" placeholder="Maksimalno soba" min=0 type="number"  /></td>
+			<td><input class="searchInput" placeholder="Minimalno soba" min=0 type="number" v-model="minRoom" name="minRoom" /></td>
+			<td><input class="searchInput" placeholder="Maksimalno soba" min=0 type="number" v-model="maxRoom" name="maxRoom"  /></td>
 		</tr>
 		<tr v-bind:hidden="!visibleSearchBar"><label>CENA</label></tr>
 		<tr v-bind:hidden="!visibleSearchBar">
@@ -44,7 +57,6 @@ Vue.component("home-page", {
           {{amenity.name}}
 		</tr>
           
-		
 		<tr v-bind:hidden="!visibleSearchBar">
 			<td> TIP SMEŠTAJA
 				<select class="select" name="apartmentType" v-model="type">
@@ -61,28 +73,36 @@ Vue.component("home-page", {
 				</select>
 			
 			</td>
+			</tr>
+		<tr v-bind:hidden="!visibleSearchBar">
+			<select v-bind:hidden="userType!='ADMIN'" class="select" name="apartmentStatus" v-model="apartmentStatus">
+				   <option class="option" value=""></option>
+				   <option class="option" value="aktivan">Aktivan</option>
+				   <option class="option" value="neaktivan">Neaktivan</option>
+			</select>
         </tr>
 		<tr v-bind:hidden="!visibleSearchBar">
-			<td><button class="button" >Pretraži</button></td>		
+			<td><button class="button" v-on:click="search">Pretraži</button></td>		
 			<td><button class="button" v-on:click="ponistipretragu">Poništi</button></td>		
 			
 		</tr>
 		
 	</table>
-	<div v-on:click="selectApartment(apartment.id)"  v-for="(apartment, index) in apartments" style = "margin-left:auto;margin-right:auto;padding:20px;">
-          <table class="apartview" v-bind:hidden="showSearched" >
+	
+	<div v-bind:style="{ width: computedWidth }" v-on:click="selectApartment(apartment.id)"  v-for="(apartment, index) in apartments" style = "margin-left:auto;margin-right:auto;">
+          <table v-bind:hidden="showSearched" style = "margin-left:auto;margin-right:auto;margin-bottom:25px;border: solid 1px rgb(152, 0, 0);border-top-left-radius: 10px;border-top-right-radius: 10px;border-bottom-left-radius: 10px;border-bottom-right-radius: 10px;">
           		<tr>
-          			<td rowspan="4" style="width:50%;height:85%">
-                        <img :src="apartment.pictures[0]" alt="Detalji" height="250" width="325" style="border:5px transparent;border-radius: 10px;margin-left:25px;">
+          			<td colspan="2" style="width: 100%;">
+                        <img :src="apartment.pictures[0]" alt="Detalji" height="420" width="745">
+          			</td>
+          		</tr>
+          
+          		
+          		<tr>
           			<td><label v-if="apartment.type === 'room'">Soba</label>
           			<label v-else>Ceo apartman</label></td>
-          			</td>
-         
-          			
-          		</tr>
-          		<tr>
-          			<td><label>Adresa: </label>
-          			<label style="margin-left:25px;">{{apartment.location.adress.city}} - {{apartment.location.adress.street}} {{apartment.location.adress.streetNumber}}</label></td>
+          			<td>
+          			<label style="margin-left:50px;">{{apartment.location.adress.city}} - {{apartment.location.adress.street}} {{apartment.location.adress.streetNumber}}</label></td>
           		</tr>
           		<tr>
           			<td><label>Broj gostiju: </label>
@@ -95,14 +115,44 @@ Vue.component("home-page", {
           
           </table>
 	</div>
-</div>	`,
+	
+	<div v-bind:hidden="!showSearched" 	v-on:click="selectApartment(apartment.id)" v-bind:style="{ width: computedWidth }" style = "margin-left:auto;margin-right:auto;" v-for="(apartment, index) in searchedApartments">
+          <table style = "margin-left:auto;margin-right:auto;margin-bottom:25px;border: solid 1px rgb(152, 0, 0);border-top-left-radius: 10px;border-top-right-radius: 10px;border-bottom-left-radius: 10px;border-bottom-right-radius: 10px;">
+          		<tr>
+          			<td colspan="2">
+          				<img :src="apartment.pictures[0]" alt="Detalji" height="420" width="745">
+          			</td>
+          		</tr>
+          		
+          		<tr>
+          			<td><label v-if="apartment.type === 'room'">Soba</label>
+          			<label v-else>Ceo apartman</label></td>
+          			<td>
+          			<label style="margin-left:50px;">{{apartment.location.adress.city}} - {{apartment.location.adress.street}} {{apartment.location.adress.streetNumber}}</label></td>
+          		</tr>
+          		<tr>
+          			<td><label>Broj gostiju: </label>
+          			<label style="margin-left:50px;">{{apartment.numberOfGuest}}</label></td>
+          		</tr>
+          		<tr>
+          			<td><label>Cena:</label>
+          			<label style="margin-left:50px;">{{apartment.priceForNight}} din po nocenju</label></td>
+          		</tr>
+          
+          </table>
+	</div>
+	
+</div>		  	
+`,
 			mounted () {
 		axios
-	     .get('/amenity')
-	     .then(response => (this.amenities = response.data)),
-	    axios
 	      .get('/apartments')
-	      .then(response => (this.apartments = response.data)), 
+	      .then(response => (this.apartments = response.data))
+		
+		axios
+	     .get('/amenity')
+	     .then(response => (this.amenities = response.data))
+
 	    axios
         .get('/users/log/test')
         .then(response => {
@@ -123,13 +173,61 @@ Vue.component("home-page", {
 				  openSearch : function(){
 					  this.visibleSearchBar=true;
 				  },
-				  ponistipretragu : function(){
-					  this.visibleSearchBar=false;
-				  },
-			
-			selectApartment : function(id) {
-	        	window.location.href = "#/apartmentDetails?id=" + id;
-	    	}
-			
+				search : function(){
+					if(this.location != '' || this.dateFrom != '' || this.dateTo != '' || this.numberOfGuest != '' || this.minRoom != '' || this.maxRoom != '' || this.minPrice != '' || this.maxPrice != ''|| this.sortValue != '' || this.amenities !=null || this.apartmentStatus!='' || this.type!='' ){
+						let datumOd = '';
+						if(this.dateFrom != '')
+							datumOd = (new Date(this.dateFrom.getFullYear(),this.dateFrom.getMonth() , this.dateFrom.getDate())).getTime();
+						let datumDo='';
+						if(this.dateTo != '')
+							datumDo = (new Date(this.dateTo.getFullYear(),this.dateTo.getMonth() , this.dateTo.getDate())).getTime();
+						axios
+						.get('/apartments/search/parameters', {
+						    params: {
+						        location: this.location,
+						        dateFrom : datumOd,
+						        dateTo : datumDo,
+						        numberOfGuest : this.numberOfGuest,
+						        minRoom: this.minRoom,
+						        maxRoom : this.maxRoom,
+						        minPrice : this.minPrice,
+						        maxPrice : this.maxPrice,
+						        sortValue: this.sortValue,
+						        type: this.type,
+						        apartmentStatus: this.apartmentStatus,
+						        amenities:JSON.stringify(this.selectedAmenities)
+						      }
+						    })
+						.then(response => {
+							this.searchedApartments = response.data;
+							this.showSearched = true;
+							this.visibleSearchBar=false;
+						});
+					}else{
+						this.showSearched = false;
+						this.searchedApartments = null;
+						this.visibleSearchBar=false;
+					}
+				},
+				ponistipretragu: function(){
+					this.searchedApartments = null;
+					this.showSearched = false;
+					this.visibleSearchBar=false;
+					this.dateFrom = '';
+					this.dateTo = '';
+					this.location = '';
+					this.numberOfGuest = '';
+					this.minRoom = '';
+					this.maxRoom = '';
+					this.minPrice = '';
+					this.maxPrice ='';
+					this.sortValue = '';
+					this.type = '';
+					this.apartmentStatus = '';
+					this.selectedAmenities = [];
+				},
+		        selectApartment : function(id) {
+		        	window.location.href = "#/apartmentDetails?id=" + id;
+		    	}
 			}
 	});
