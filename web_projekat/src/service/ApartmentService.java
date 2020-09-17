@@ -66,4 +66,24 @@ public class ApartmentService {
 		return null;
 	}
 	
+	public String Update(Apartment apartment) {
+		try {
+			//TODO
+			apartmentDao.Update(apartment);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return g.toJson(apartment);		
+	}
+	
+	public String Delete(String id) {
+		try {
+			return g.toJson(apartmentDao.Delete(id));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
+		return null;
+	}
 }

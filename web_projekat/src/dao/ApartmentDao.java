@@ -340,4 +340,72 @@ private boolean uporediListe(List<Amenity> listaApartmana,List<Amenity> listaPre
 	return true;
 }
 
+public Apartment Update(Apartment apartment) throws JsonSyntaxException, IOException {
+	ArrayList<Apartment> apartments = (ArrayList<Apartment>) GetAllFromFile();
+	
+	List<String> lista = new ArrayList<String>();
+	 
+	
+	for(String item : apartment.getPictures()) {
+		if(!item.startsWith("data:image")) {
+			lista.add(item);
+		}
+	}
+	
+    int numberOfImages=0;
+    for(String item : apartment.getPictures()) {
+        numberOfImages++;
+        
+        if(item.startsWith("data:image")) {
+        	String imageString = item.split(",")[1];
+        	BufferedImage image = null;
+            byte[] imageByte;
+ 
+            BASE64Decoder decoder = new BASE64Decoder();
+            imageByte = decoder.decodeBuffer(imageString);
+            ByteArrayInputStream bis = new ByteArrayInputStream(imageByte);
+            image = ImageIO.read(bis);
+            bis.close();
+ 
+            
+            String imageName= apartment.getId() + "-" + numberOfImages + ".png";
+            while(lista.contains("apartmentPictures\\" + imageName)) {
+            	numberOfImages++;
+            	imageName= apartment.getId() + "-" + numberOfImages + ".png";
+            }
+            
+            lista.add("apartmentPictures\\" + imageName);
+           
+            File outputfile = new File(System.getProperty("user.dir")+ "\\static\\apartmentPictures\\" + imageName);
+            ImageIO.write(image, "png", outputfile);
+    
+        }
+    }
+    apartment.setPictures(lista);
+	
+	for(Apartment a : apartments) {
+		if(a.getId() == apartment.getId()) {
+			apartments.remove(a);
+			apartments.add(apartment);
+			break;
+		}
+	}
+	SaveAll(apartments);
+	return apartment;
+}
+
+
+public Apartment Delete(String id) throws JsonSyntaxException, IOException {
+	ArrayList<Apartment> apartments = (ArrayList<Apartment>) GetAllFromFile();
+	Apartment retVal = null;
+	for(Apartment a : apartments) {
+		if(a.getId() == Integer.parseInt(id)) {
+			a.setDeleted(true);
+			retVal = a;
+			break;
+		}
+	}
+	SaveAll(apartments);
+	return retVal;
+}
 }

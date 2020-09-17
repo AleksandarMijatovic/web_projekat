@@ -91,6 +91,11 @@ public class ApartmentController {
 
 			return apartmentService.searchApartments(req.queryParams("location"), req.queryParams("dateFrom"), req.queryParams("dateTo"), req.queryParams("numberOfGuest"), req.queryParams("minRoom"), req.queryParams("maxRoom"), req.queryParams("minPrice"), req.queryParams("maxPrice"), req.queryParams("sortValue"), req.queryParams("type"), req.queryParams("apartmentStatus"),g.fromJson(req.queryParams("amenities"), new TypeToken<List<Amenity>>(){}.getType()),userType,username);
 		});
+		
+		post("/apartment/edit", (req, res) -> 
+		apartmentService.Update(g.fromJson(req.body(), Apartment.class)));
+		
+		delete("/apartment/:id", (req,res) -> apartmentService.Delete(req.params("id")));
 	}
 }
 
