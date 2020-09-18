@@ -27,6 +27,7 @@ import com.google.gson.reflect.TypeToken;
 import Decoder.BASE64Decoder;
 import beans.Amenity;
 import beans.Apartment;
+import beans.Comment;
 import beans.Guest;
 import beans.Host;
 import beans.ApartStatus;
@@ -619,4 +620,124 @@ private List<Long> AddDaysForRenting(List<Long> dateForRenting, Reservation rese
 	}
 	return dateForRenting;
 }
+
+public List<Long> getOccupiedDates(String id) throws JsonSyntaxException, IOException{
+	List<Long> retVal = new ArrayList<Long>();
+	if(id != null) {
+		Apartment apartment = get(id);
+		for(Period p : apartment.getDateForRenting()) {
+			Date temp = new Date(p.getDateFrom());
+			Date dateTo = new Date(p.getDateTo());
+			
+			
+			Calendar c = Calendar.getInstance(); 
+			while(temp.compareTo(dateTo) <= 0) {
+				if(!apartment.getFreeDateForRenting().contains(temp.getTime())) {
+					retVal.add(temp.getTime());
+				}
+				c.setTime(temp); 
+				c.add(Calendar.DAY_OF_YEAR, 1);
+				temp = c.getTime();
+			}
+		}
+	}
+	return retVal;
+}
+
+public Comment addComment(Comment comment) throws JsonSyntaxException, IOException {
+	
+	comment.setId(GetMaxIDForComment());
+	ArrayList<Apartment> apartments = (ArrayList<Apartment>) GetAllFromFile();
+	for(Apartment a : apartments) {
+		if(a.getId() == comment.getForApartment().getId()) {
+			List<Comment> com = a.getComments();
+			com.add(comment);
+			a.setComments(com);
+			break;
+		}
+	}
+	SaveAll(apartments);
+	return comment;
+}
+
+private int GetMaxIDForComment() throws JsonSyntaxException, IOException  {
+	int maxId = 0;
+	ArrayList<Apartment> apartments = (ArrayList<Apartment>) GetAllFromFile();
+	for(Apartment a : apartments) {
+		for(Comment c : a.getComments()) {
+			if(c.getId() > maxId)
+				maxId = c.getId();
+		}
+	}
+	return ++maxId;
+}
+
+public List<Reservation> searchReservation(String questUsername, String sortValue, String reservationStatus, int whatToGet , String username) throws JsonSyntaxException, IOException{
+	
+	ArrayList<Reservation> list = (ArrayList<Reservation>) getAllReservations(whatToGet,username);
+	List<Reservation> retVal = new ArrayList<Reservation>();
+		
+			ReStatus status;
+			if(reservationStatus.equals("kreirano"))
+				status = ReStatus.created;		
+	else if(reservationStatus.equals("odbijeno"))
+		status = ReStatus.rejected;
+	else if(reservationStatus.equals("otkazano"))
+		status = ReStatus.canceled;
+	else if(reservationStatus.equals("prihvaceno"))
+		status = ReStatus.accepted;
+	else 
+		status = ReStatus.done;
+
+	for(Reservation item : list) {
+		if((!reservationStatus.isEmpty()? item.getStatus()==status : true)
+				&& (!questUsername.isEmpty()? item.getGuest().getUsername().equals(questUsername) : true))
+			retVal.add(item);
+	}	
+	
+	if(sortValue.equals("rastuca")) {
+		Collections.sort(retVal, new Comparator<Reservation>() {
+			@Override
+			public int compare(Reservation o1, Reservation o2) {
+				// TODO Auto-generated method stub
+				return (int)(o1.getPrice() - o2.getPrice());
+			}
+		});	
+	}else if(sortValue.equals("opadajuca")) {
+		Collections.sort(retVal, new Comparator<Reservation>() {
+			@Override
+			public int compare(Reservation o1, Reservation o2) {
+				// TODO Auto-generated method stub
+				return (int)(o2.getPrice() - o1.getPrice());
+			}
+		});	
+	}
+	
+	
+	
+	return retVal;
+
+}
+
+public boolean toggleCommentVisiility(String id) throws JsonSyntaxException, IOException {
+	int idNum = Integer.parseInt(id);
+	
+	ArrayList<Apartment> apartments = (ArrayList<Apartment>) GetAllFromFile();
+	for(Apartment a : apartments) {
+		for(Comment c : a.getComments()) {
+			if(c.getId() == idNum) {
+				if(c.isVisibleForGuest()) {
+					c.setVisibleForGuest(false);
+				}else {
+					c.setVisibleForGuest(true);
+				}
+				SaveAll(apartments);
+				return true;
+			}
+		}
+	}
+	
+	return false;
+}
+
 }

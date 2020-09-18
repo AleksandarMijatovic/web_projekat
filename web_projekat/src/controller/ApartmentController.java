@@ -136,6 +136,43 @@ public class ApartmentController {
 			return apartmentService.getAllReservations(whatToGet, user.getUsername());
 		});
 		
+		get("/reservation/search/parameters", (req,res) -> {
+			Session ss = req.session(true);
+			User user = ss.attribute("user");
+			int whatToGet = -1;
+			if(user instanceof Guest)
+				whatToGet = 0;
+			else if(user instanceof Host)
+				whatToGet = 1;
+			else 
+				whatToGet = 2;
+			
+	
+			
+			return apartmentService.searchReservation(req.queryParams("guestUsername"), req.queryParams("sortValue"), req.queryParams("reservationStatus"),whatToGet, user.getUsername());
+		
+		});
+		
+		post("/apartment/comment", (req,res) -> {
+			Comment c = g.fromJson(req.body(), Comment.class);
+			
+			//izbegavanje beskonacnog upisa u json
+			Guest g = c.getGuest();
+			g.setRentedAppartments(null);
+			g.setReservations(null);
+			c.setGuest(g);
+			Apartment a = c.getForApartment();
+			
+			a.setAmenities(null);
+			a.setComments(null);
+			a.setDateForRenting(null);
+			a.setFreeDateForRenting(null);
+			
+			return apartmentService.addComment(c);
+			
+		});
+		
+		put("/apartment/comment/toggle/:id", (req,res) -> (apartmentService.toggleCommentVisiility(req.params("id"))));
 		
 		put("/apartment/accept/:id", (req,res) -> (apartmentService.changeReservationStatus(req.params("id"),ReStatus.accepted)));
 		

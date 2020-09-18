@@ -92,7 +92,7 @@ Vue.component("apartment-details", {
 					<td colspan="2"><button class="buttonSave" v-on:click="addPeriod">Dodaj</button><br/></td>
 				</tr>
 				<tr v-bind:hidden="userType != 'GUEST'">
-					<td colspan="2"><button class="buttonBris" v-on:click="rezervisiClick">Rezerviši</button><br/></td>
+					<td colspan="2"><button class="buttonSave" v-on:click="rezervisiClick">Rezerviši</button><br/></td>
 				</tr>
 				</br>
 				<tr v-bind:hidden="userType != 'HOST' && userType != 'ADMIN'"><td colspan="2" >Upravljanje apartmanom: </td></tr>

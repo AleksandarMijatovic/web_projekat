@@ -2,7 +2,7 @@ package beans;
 
 public class Comment {
 	private int id;
-	private String guest;
+	private Guest guest;
 	private Apartment forApartment;
 	private String text;
 	private int grade;
@@ -12,7 +12,7 @@ public class Comment {
 		
 	}
 
-	public Comment(int id, String guest, Apartment forApartment, String text, int grade) {
+	public Comment(int id, Guest guest, Apartment forApartment, String text, int grade) {
 		super();
 		this.id = id;
 		this.guest = guest;
@@ -21,11 +21,11 @@ public class Comment {
 		this.grade = grade;
 	}
 
-	public String getGuest() {
+	public Guest getGuest() {
 		return guest;
 	}
 
-	public void setGuest(String guest) {
+	public void setGuest(Guest guest) {
 		this.guest = guest;
 	}
 
