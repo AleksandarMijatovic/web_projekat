@@ -7,6 +7,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 
 import beans.Apartment;
+import beans.ReStatus;
 import beans.Reservation;
 import beans.Amenity;
 
@@ -126,5 +127,15 @@ public class ApartmentService {
 			e.printStackTrace();
 		}
 		return g.toJson(null);
+	}
+	
+	public boolean changeReservationStatus(String id, ReStatus status) {
+		try {
+			return apartmentDao.changeReservationStatus(id, status);
+		}catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
 	}
 }

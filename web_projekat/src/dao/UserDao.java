@@ -20,6 +20,7 @@ import beans.Apartment;
 import beans.Gender;
 import beans.Guest;
 import beans.Host;
+import beans.ReStatus;
 import beans.Reservation;
 import beans.User;
 import beans.TypeOfUser;
@@ -96,6 +97,26 @@ public class UserDao {
 		}
 		
 		return null;
+	}
+	
+	public void changeReservationStatus(String id, ReStatus status) throws JsonIOException, IOException {
+		ArrayList<User> users = (ArrayList<User>) GetAll();
+		boolean changed = false;
+
+		for(User u : users) {
+			if(u.getUserType() == TypeOfUser.Guest) {
+				for(Reservation r : ((Guest)u).getReservations()) {
+					if(r.getId() == Integer.parseInt(id)) {
+						r.setStatus(status);
+						changed = true;
+						break;
+					}
+				}
+			}
+			if(changed)
+				break;
+		}
+		SaveAll(users);
 	}
 	
 	public List<User> GetAllByUserType(int whatToGet, String username) throws JsonSyntaxException, IOException{		

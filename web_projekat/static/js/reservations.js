@@ -62,7 +62,7 @@ Vue.component("reservations", {
 			<td>{{r.guest.username}}</td>
 			<td v-if="r.status ==='created'">Kreirano</td>
 			<td v-else-if="r.status ==='rejected'">Odbijeno</td>
-			<td v-else-if="r.status ==='withdraw'">Otkazano</td>
+			<td v-else-if="r.status ==='canceled'">Otkazano</td>
 			<td v-else-if="r.status ==='accepted'">Prihvaceno</td>
 			<td v-else>Zavrseno</td>
 		</tr>
@@ -75,7 +75,7 @@ Vue.component("reservations", {
 			<td>{{r.guest.username}}</td>
 			<td v-if="r.status ==='created'">Kreirano</td>
 			<td v-else-if="r.status ==='rejected'">Odbijeno</td>
-			<td v-else-if="r.status ==='withdraw'">Otkazano</td>
+			<td v-else-if="r.status ==='canceled'">Otkazano</td>
 			<td v-else-if="r.status ==='accepted'">Prihvaceno</td>
 			<td v-else>Zavrseno</td>
 		</tr>
@@ -129,9 +129,9 @@ Vue.component("reservations", {
         .get('/users/log/test')
         .then(response => {
         	if(response.data != null){
-        		if(response.data.userType == "Host")
+        		if(response.data.typeOfUser == "Host")
         			this.userType='HOST';
-        		else if(response.data.userType == "Administrator")
+        		else if(response.data.typeOfUser == "Administrator")
         			this.userType = 'ADMIN';
         		else
         			this.userType = 'GUEST';
@@ -154,23 +154,23 @@ Vue.component("reservations", {
 				this.status = 'Kreirano';
 			else if(reservation.status ==='rejected')
 				this.status = 'Odbijeno';
-			else if(reservation.status ==='withdraw')
+			else if(reservation.status ==='canceled')
 				this.status = 'Otkazano';
 			else if(reservation.status ==='accepted')
-				this.status = 'Prihvaceno';
+				this.status = 'Prihvaćeno';
 			else
-				this.status = 'Zavrseno';
+				this.status = 'Završeno';
 		},
 		withdrawReservation : function(){
 			if(this.selectedReservation.status == 'created' || this.selectedReservation.status == 'accepted'){
 				axios
-				.put('/apartment/withdraw/' + this.selectedReservation.id)
+				.put('/apartment/canceled/' + this.selectedReservation.id)
 				.then(response => {
-					this.selectedReservation.status = 'withdraw';
-					toast("Rezervacija otkazana!");	
+					this.selectedReservation.status = 'canceled';
+					toast("Rezervacija je otkazana!");	
 				});
 			}else{
-				toast("Moguce je odustati od rezervacije samo ako je sa statusom 'Kreirano' i 'Prihvaceno'!");
+				toast("Moguce je odustati od rezervacije samo ako je sa statusom 'Kreirano' i 'Prihvaćeno'!");
 			}
 		},
 		rejectReservation : function(){
@@ -182,7 +182,7 @@ Vue.component("reservations", {
 					toast("Rezervacija odbijena!");	
 				});
 			}else{
-				toast("Moguce je samo odbiti rezervaciju sa statusom 'Kreirano' i 'Prihvaceno'!");
+				toast("Moguce je samo odbiti rezervaciju sa statusom 'Kreirano' i 'Prihvaćeno'!");
 			}
 		},
 		approveReservation : function(){
@@ -191,7 +191,7 @@ Vue.component("reservations", {
 				.put('/apartment/accept/' + this.selectedReservation.id)
 				.then(response => {
 					this.selectedReservation.status = 'accepted';
-					toast("Rezervacija prihvacena!");	
+					toast("Rezervacija prihvaćena!");	
 				});
 			}else{
 				toast("Moguce je odobriti samo one rezervacije sa statusom 'Kreirano'!");	
@@ -203,10 +203,10 @@ Vue.component("reservations", {
 				.put('/apartment/finished/' + this.selectedReservation.id)
 				.then(response => {
 					this.selectedReservation.status = 'done';
-					toast("Rezervacija zavrsena!");	
+					toast("Rezervacija završena!");	
 				});
 			}else{
-				toast("Prelazak u status 'Zavrseno' je moguce za one rezervacije koje su zavrsene!");		
+				toast("Prelazak u status 'Završeno' je moguće za one rezervacije koje su prošle!");		
 			}
 		},
 		search : function(){

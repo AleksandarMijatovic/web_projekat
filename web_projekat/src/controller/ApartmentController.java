@@ -135,6 +135,15 @@ public class ApartmentController {
 			
 			return apartmentService.getAllReservations(whatToGet, user.getUsername());
 		});
+		
+		
+		put("/apartment/accept/:id", (req,res) -> (apartmentService.changeReservationStatus(req.params("id"),ReStatus.accepted)));
+		
+		put("/apartment/reject/:id", (req,res) -> (apartmentService.changeReservationStatus(req.params("id"),ReStatus.rejected)));
+		
+		put("/apartment/canceled/:id", (req,res) -> (apartmentService.changeReservationStatus(req.params("id"),ReStatus.canceled)));
+		
+		put("/apartment/finished/:id", (req,res) -> (apartmentService.changeReservationStatus(req.params("id"),ReStatus.done)));
 	}
 }
 

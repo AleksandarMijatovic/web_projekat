@@ -32,6 +32,7 @@ import beans.Host;
 import beans.ApartStatus;
 import beans.ApartType;
 import beans.Period;
+import beans.ReStatus;
 import beans.Reservation;
 
 
@@ -587,6 +588,35 @@ private List<Long> setFreeDaysForRenting(List<Long> freeDateForRenting, Reservat
 	return retVal;
 }
 
+public boolean changeReservationStatus(String id, ReStatus status) throws JsonSyntaxException, IOException {
+	ArrayList<Apartment> apartments = (ArrayList<Apartment>) GetAllFromFile();
+	boolean changed = false;
+	for(Apartment a : apartments) {
+		for(Reservation r : a.getReservations()) {
+			if(r.getId() == Integer.parseInt(id)) {
+				r.setStatus(status);
+				if(status == ReStatus.rejected || status == ReStatus.canceled)
+					a.setFreeDateForRenting(AddDaysForRenting(a.getFreeDateForRenting(), r));
+				changed = true;
+				break;
+			}
+		}
+		if(changed)
+			break;
+	}
+	SaveAll(apartments);
+	userDao.changeReservationStatus(id, status);
+	return changed;
+}
 
+private List<Long> AddDaysForRenting(List<Long> dateForRenting, Reservation reservation) {
+	long temp = reservation.getStartDate();
+	long endDate = reservation.getStartDate() + reservation.getDaysForStay()*24*60*60*1000;
 
+	while(temp <= endDate) {
+		dateForRenting.add(temp);
+		temp += 24*60*60*1000;
+	}
+	return dateForRenting;
+}
 }

@@ -170,7 +170,7 @@ Vue.component("editApartment", {
 </tr>
 <button class="buttonChangeUser" v-on:click="odustaniClick">Odustani</button><br/>
 
-
+</table>
   </div>
 </div>
 `,components : { 

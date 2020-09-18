@@ -259,19 +259,15 @@ Vue.component("apartment-details", {
 				if(this.dateFrom.getTime() <= this.dateTo.getTime()){
 					let datumOd = (new Date(this.dateFrom.getFullYear(),this.dateFrom.getMonth() , this.dateFrom.getDate())).getTime();
 					let datumDo = (new Date(this.dateTo.getFullYear(),this.dateTo.getMonth() , this.dateTo.getDate())).getTime();
+					let pom = datumOd;
 					let eror = false;
 					let datumi = [];
-					while(datumOd <= datumDo){
-						for(let d of this.disabledDates.ranges){
-							if((datumOd <= d.from.getTime() && datumDo >= d.from.getTime) || (datumOd >= d.from.getTime() || datumOd <= d.to.getTime())){
-								eror = true;
-							}
-						}
+					while(pom <= datumDo){
+					
 						
 						
-						
-						datumi.push(datumOd);
-						datumOd = datumOd + 24*60*60*1000;
+						datumi.push(pom);
+						pom= pom + 24*60*60*1000;
 					}
 					if(eror === true)
 					{
