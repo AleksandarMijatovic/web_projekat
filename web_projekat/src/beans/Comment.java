@@ -5,14 +5,14 @@ public class Comment {
 	private Guest guest;
 	private Apartment forApartment;
 	private String text;
-	private int grade;
+	private String grade;
 	private boolean visibleForGuest = false;
 
 	public Comment() {
 		
 	}
 
-	public Comment(int id, Guest guest, Apartment forApartment, String text, int grade) {
+	public Comment(int id, Guest guest, Apartment forApartment, String text, String grade) {
 		super();
 		this.id = id;
 		this.guest = guest;
@@ -45,11 +45,11 @@ public class Comment {
 		this.text = text;
 	}
 
-	public int getGrade() {
+	public String getGrade() {
 		return grade;
 	}
 
-	public void setGrade(int grade) {
+	public void setGrade(String grade) {
 		this.grade = grade;
 	}
 	

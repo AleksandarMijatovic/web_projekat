@@ -32,6 +32,10 @@ public class UserService {
 
 	}
 	
+	public boolean canUserComment(Guest user, String appartmentId) {
+		return userdao.canUserComment(user, appartmentId);
+	}
+	
 	public String Register(User user) throws JsonSyntaxException, IOException {
 		try {
 			userdao.AddUser(user);

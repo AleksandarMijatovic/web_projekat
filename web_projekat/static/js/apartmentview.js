@@ -16,7 +16,7 @@ Vue.component("apartment-details", {
 	        commentError:'',
 	        selectedComment:{},
 	        canReserve:null,
-	        canUserComment:true,
+	        canUserComment:false,
 	        isActive:null
 	    }
 	},
@@ -114,15 +114,15 @@ Vue.component("apartment-details", {
 		<h3>Komentari: </h3>
 		<tr>
 		<td v-bind:hidden="userType != 'HOST'">
-				<button class="buttonBris" v-on:click="disableComment()">Skini komentar</button>
-				<button class="buttonBris" v-on:click="enableComment()">Prikazi komentar</button>
+				<button class="buttonSave" v-on:click="disableComment()">Skini komentar</button>
+				<button class="buttonSave" v-on:click="enableComment()">Prikazi komentar</button>
 		</td>
 		</tr>
 		<tr v-for="c in apartment.comments" v-if="c.visibleForGuest || (userType == 'HOST' || userType == 'ADMIN')" v-on:click="selectComment(c)" v-bind:class="{selected : selectedComment.id===c.id}">
-			<td style="border: solid 1px rgb(152, 0, 0);border-top-left-radius: 10px;border-top-right-radius: 10px;border-bottom-left-radius: 10px;border-bottom-right-radius: 10px;">
+			<td class="apartview" style="width:100%">
 				<table>
-					<tr><td style="color:rgb(152, 0, 0)">{{"Ocena: " + c.grade}}</td><td v-bind:hidden="userType != 'HOST'">{{(c.visibleForGuest) ? 'Vidljiv' : 'Nevidljiv'}}</td</tr>
-					<tr><td style="color:rgb(152, 0, 0)">{{"Ocenio: " + c.guest.name + ' ' + c.guest.surname}}</td></tr>
+					<tr><td style="color:rgb(102, 153, 153)">{{"Ocena: " + c.grade}}</td><td v-bind:hidden="userType != 'HOST'">{{(c.visibleForGuest) ? 'Vidljiv' : 'Nevidljiv'}}</td</tr>
+					<tr><td style="color:rgb(102, 153, 153)">{{"Ocenio: " + c.guest.name + ' ' + c.guest.surname}}</td></tr>
 					<tr><td >{{c.text}}</td></tr>
 				</table>
 			</td>	

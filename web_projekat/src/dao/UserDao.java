@@ -141,6 +141,17 @@ public class UserDao {
 		return retVal;
 	}
 	
+	public boolean canUserComment(Guest user, String appartmentId) {
+		if(user != null) {
+			for (Reservation r : user.getReservations()) {
+				if(r.getAppartment().getId() == Integer.parseInt(appartmentId) && (r.getStatus() == ReStatus.done || r.getStatus() == ReStatus.rejected)) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	
 	public boolean toggleBlockUser(String username) throws JsonIOException, IOException {
 		ArrayList<User> users = (ArrayList<User>) GetAll();
 		for(User u : users) {

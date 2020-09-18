@@ -71,6 +71,14 @@ public class UserController {
 		return true;
 	});
 	
+	get("/users/apartment/cancoment/:appartmentId", (req, res) -> {
+		res.type("application/json");
+		Session ss = req.session(true);
+		User user = ss.attribute("user");
+		if(user == null || !(user instanceof Guest))
+			return false;
+		return userService.canUserComment((Guest)user, req.params("appartmentId"));
+	});
 	
 	put("/users/update", (req,res)-> {
 		Session ss = req.session(true);
