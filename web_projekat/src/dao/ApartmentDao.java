@@ -369,14 +369,14 @@ public Apartment Update(Apartment apartment) throws JsonSyntaxException, IOExcep
  
             
             String imageName= apartment.getId() + "-" + numberOfImages + ".png";
-            while(lista.contains("apartmentPictures\\" + imageName)) {
+            while(lista.contains("pictures\\" + imageName)) {
             	numberOfImages++;
             	imageName= apartment.getId() + "-" + numberOfImages + ".png";
             }
             
-            lista.add("apartmentPictures\\" + imageName);
+            lista.add("pictures\\" + imageName);
            
-            File outputfile = new File(System.getProperty("user.dir")+ "\\static\\apartmentPictures\\" + imageName);
+            File outputfile = new File(System.getProperty("user.dir")+ "\\static\\pictures\\" + imageName);
             ImageIO.write(image, "png", outputfile);
     
         }

@@ -88,17 +88,11 @@ Vue.component("home-page", {
 		</tr>
 		
 	</table>
-	
-	<div v-bind:style="{ width: computedWidth }" v-on:click="selectApartment(apartment.id)"  v-for="(apartment, index) in apartments" style = "margin-left:auto;margin-right:auto;">
-          <table v-bind:hidden="showSearched" style = "margin-left:auto;margin-right:auto;margin-bottom:25px;border: solid 1px rgb(152, 0, 0);border-top-left-radius: 10px;border-top-right-radius: 10px;border-bottom-left-radius: 10px;border-bottom-right-radius: 10px;">
+	<div v-on:click="selectApartment(apartment.id)"  v-for="(apartment, index) in apartments" style = "margin-left:auto;margin-right:auto;padding:20px;">
+          <table class="apartview" v-bind:hidden="showSearched" >
           		<tr>
-          			<td colspan="2" style="width: 100%;">
-                        <img :src="apartment.pictures[0]" alt="Detalji" height="420" width="745">
-          			</td>
-          		</tr>
-          
-          		
-          		<tr>
+          			<td rowspan="4" style="width:50%;height:85%">
+                        <img :src="apartment.pictures[0]" alt="Detalji" height="250" width="325" style="border:5px transparent;border-radius: 10px;margin-left:25px;">
           			<td><label v-if="apartment.type === 'room'">Soba</label>
           			<label v-else>Ceo apartman</label></td>
           			<td>
@@ -122,13 +116,13 @@ Vue.component("home-page", {
           			<td colspan="2">
           				<img :src="apartment.pictures[0]" alt="Detalji" height="420" width="745">
           			</td>
+         
+          			
           		</tr>
           		
           		<tr>
-          			<td><label v-if="apartment.type === 'room'">Soba</label>
-          			<label v-else>Ceo apartman</label></td>
-          			<td>
-          			<label style="margin-left:50px;">{{apartment.location.adress.city}} - {{apartment.location.adress.street}} {{apartment.location.adress.streetNumber}}</label></td>
+          			<td><label>Adresa: </label>
+          			<label style="margin-left:25px;">{{apartment.location.adress.city}} - {{apartment.location.adress.street}} {{apartment.location.adress.streetNumber}}</label></td>
           		</tr>
           		<tr>
           			<td><label>Broj gostiju: </label>

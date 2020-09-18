@@ -38,7 +38,8 @@ Vue.component("editApartment", {
                 imagesForBackend: [],
                 imageSize: '40%',
                 imageCount: 0,
-                width:window.screen.availWidth/5.5
+                width:window.screen.availWidth/5.5,
+                amenities : null
 			    }
 	},
 	template: ` 
@@ -95,21 +96,18 @@ Vue.component("editApartment", {
 		</tr>
 		<tr>
 			<td colspan="2">
-			<div class="form-group">
-	    		<label for="form-address">Adresa</label>
-	    		<input type="search"  class="form-control" id="form-address" placeholder="Unesite adresu" />
-			</div>
-			<br/>
-			<div >
-	    		<label >Broj:</label>
-	    		<input type="number" min="1" v-model="streetNumber" name="streetNumber" class="form-control"  placeholder="Unesite broj" />
- 			 <p style="color: red" >{{streetNumberError}}</p>	
-
-			</div>
+			
 			<br/>
 			<div class="form-group">
 		    	<label for="form-city">Ulica:</label>
 		    	<input type="text" class="form-control" disabled="true" id="form-street">
+			</div>
+			<br/>
+			<div  class="form-group">
+	    		<label >Broj:</label>
+	    		<input type="number" min="1" v-model="streetNumber" disabled="true" name="streetNumber" class="form-control"  placeholder="Unesite broj" />
+ 			 
+
 			</div>
 			<br/>
 
@@ -195,7 +193,7 @@ Vue.component("editApartment", {
   		});
     	  
 		axios
-        .get('/amenities')
+        .get('/amenity')
         .then(response => (this.amenities = response.data));
 		
 		axios
@@ -215,25 +213,7 @@ Vue.component("editApartment", {
 			}
 		});
 		
-		this.placesAutocomplete = places({
-		    appId: 'plQ4P1ZY8JUZ',
-		    apiKey: 'bc14d56a6d158cbec4cdf98c18aced26',
-		    container: document.querySelector('#form-address'),
-		    templates: {
-		      value: function(suggestion) {
-		        return suggestion.name;
-		      }
-		    }
-		  }).configure({
-		    type: 'address'
-		  });
-		this.placesAutocomplete.on('change', function resultSelected(e) {
-		    document.querySelector('#form-street').value = e.suggestion.value || '';
-		    document.querySelector('#form-city').value = e.suggestion.city || '';
-		    document.querySelector('#form-zip').value = e.suggestion.postcode || '';
-		    document.querySelector('#form-longitude').value = e.suggestion.latlng.lng || '';
-			document.querySelector('#form-latitude').value = e.suggestion.latlng.lat || '';
-		  });
+		
 	}, 
 	methods : {	
 		onFileChange(e) {
