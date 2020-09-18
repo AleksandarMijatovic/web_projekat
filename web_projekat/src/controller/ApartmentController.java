@@ -33,7 +33,7 @@ public class ApartmentController {
 			//user.setAppartments(null)
 			a.setHost(user);
 			
-			System.out.println("aaaaaaaaaaaaaaaaaAAAAAAA");
+			//System.out.println("aaaaaaaaaaaaaaaaaAAAAAAA");
 			return apartmentService.Create(a);
 		});
 		
@@ -43,6 +43,16 @@ public class ApartmentController {
 			
 			return apartmentService.GetAll();
 		});*/
+		
+		get("/apartment/datesForDisable/:id", (req,res) ->  {
+		   //  System.out.println("aaaaa"+apartmentService.getOccupiedDates(req.params("id")));
+			return apartmentService.zauzetiDatumi(req.params("id"));
+		});
+		
+		get("/apartment/rangesForDisable/:id", (req,res) ->  {
+			//System.out.println("Periodi moguci:    "+apartmentService.getOccupiedRanges(req.params("id")));
+			return apartmentService.intervalZauzetosti(req.params("id"));
+			});
 		
 		get("/apartment/:id", (req,res) -> apartmentService.getApartment(req.params("id")));
 
@@ -70,11 +80,26 @@ public class ApartmentController {
 			
 		});
 		
+		post("/apartment/reserve", (req,res) -> {
+			System.out.println("Ovo je: "+ req.body());
+			Reservation r = g.fromJson(req.body(), Reservation.class);
+			
+			Session ss = req.session(true);
+			Guest user = ss.attribute("user");
+			
+			user.setRentedAppartments(null);
+			//user.setReservations(null);
+			
+			r.setGuest(user);
+			
+			return apartmentService.reserve(r);
+		});
+		
 		get("/apartments/search/parameters", (req,res) -> {
 			Session ss = req.session(true);
 			User user = ss.attribute("user");
 			int userType = -1;
-			if(user instanceof Guest)
+			if(user instanceof Guest || user==null)
 				userType = 0;
 			else if(user instanceof Host)
 				userType = 1;
@@ -96,6 +121,20 @@ public class ApartmentController {
 		apartmentService.Update(g.fromJson(req.body(), Apartment.class)));
 		
 		delete("/apartment/:id", (req,res) -> apartmentService.Delete(req.params("id")));
+	
+		get("/apartment/get/reservations", (req,res) -> {
+			Session ss = req.session(true);
+			User user = ss.attribute("user");
+			int whatToGet = -1;
+			if(user instanceof Guest)
+				whatToGet = 0;
+			else if(user instanceof Host)
+				whatToGet = 1;
+			else 
+				whatToGet = 2;
+			
+			return apartmentService.getAllReservations(whatToGet, user.getUsername());
+		});
 	}
 }
 

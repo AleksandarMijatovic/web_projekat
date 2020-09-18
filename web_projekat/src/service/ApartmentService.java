@@ -7,6 +7,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 
 import beans.Apartment;
+import beans.Reservation;
 import beans.Amenity;
 
 import dao.ApartmentDao;
@@ -85,5 +86,45 @@ public class ApartmentService {
 			e.printStackTrace();
 		} 
 		return null;
+	}
+	
+	public String zauzetiDatumi(String id) {
+		try {
+			return g.toJson(apartmentDao.zauzetiDatumi(id));
+		} catch(Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public String intervalZauzetosti(String id) {
+		try {
+			return g.toJson(apartmentDao.intervalZauzetosti(id));
+		} catch(Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public boolean reserve(Reservation reservation) {
+		try {
+			return apartmentDao.reserve(reservation);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
+	}
+	
+	public String getAllReservations(int whatToGet, String username) {
+		try {
+			return g.toJson(apartmentDao.getAllReservations(whatToGet,username));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return g.toJson(null);
 	}
 }
